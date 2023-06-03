@@ -1,0 +1,31 @@
+{
+  "name": "tienda-videojuegos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev src/index.ts",
+    "start": "node build/index.js",
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asalazars-devco/Tienda-Videojuegos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asalazars-devco/Tienda-Videojuegos/issues"
+  },
+  "homepage": "https://github.com/asalazars-devco/Tienda-Videojuegos#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
