@@ -12,7 +12,7 @@ export class ObtenerVideojuegoPorId {
             throw new Error(`No existe videojuego con ID: ${idVideojuego}`);
         }
 
-        console.log('Nombre videojuego: ', videojuego.nombre);
+        console.log('videojuego obtenido: ', videojuego.nombre);
         return videojuego;
     }
 }

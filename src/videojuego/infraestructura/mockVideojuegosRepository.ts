@@ -55,14 +55,14 @@ export class MockVideojuegosRepository implements VideojuegoRepository {
     }
 
     async crear(
-        idVideojuego: string,
+        // idVideojuego: string,
         nombreVideojuego: string,
         precioVideojuego: number,
         imagenVideojuego: string,
         stockVideojuego: number
     ): Promise<Videojuego> {
         const videojuegoNuevo = new Videojuego(
-            idVideojuego,
+            'idVideojuego',
             nombreVideojuego,
             precioVideojuego,
             imagenVideojuego,

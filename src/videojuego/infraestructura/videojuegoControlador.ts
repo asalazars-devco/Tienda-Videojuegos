@@ -39,11 +39,10 @@ export class VideojuegoControlador {
     }
 
     async execCrearVideojuego(req: Request, res: Response) {
-        const { id, nombre, precio, imagen, stock } = req.body;
+        const { nombre, precio, imagen, stock } = req.body;
 
         try {
             const videojuegoNuevo = await this.crearVideojuego.ejecutar(
-                id,
                 nombre,
                 precio,
                 imagen,
@@ -53,7 +52,11 @@ export class VideojuegoControlador {
             res.status(201).send(videojuegoNuevo);
         } catch (error: any) {
             console.log('mensaje de Error:', error.message);
-            res.status(400).sendStatus(400);
+            if (error.message.includes('llave duplicada')) {
+                res.status(201).sendStatus(201);
+            } else {
+                res.status(400).sendStatus(400);
+            }
         }
     }
 

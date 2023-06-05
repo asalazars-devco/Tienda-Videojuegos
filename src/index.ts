@@ -1,5 +1,5 @@
 import express from 'express';
-import { videojuegoRouter } from './infraestructura/videojuegoRouter';
+import { videojuegoRouter } from './videojuego/infraestructura/videojuegoRouter';
 
 const app = express();
 

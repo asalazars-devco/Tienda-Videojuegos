@@ -5,26 +5,30 @@ import { ActualizarVideojuego } from '../aplicacion/actualizarVideojuego';
 import { EliminarVideojuego } from '../aplicacion/eliminarVideojuego';
 
 import { MockVideojuegosRepository } from './mockVideojuegosRepository';
+import { PostgresqlVideojuegosRepository } from './postgresqlVideojuegosRepository';
 import { VideojuegoControlador } from './videojuegoControlador';
 
 const mockVideojuegosRepository = new MockVideojuegosRepository();
+const postgresqlVideojuegosRepository = new PostgresqlVideojuegosRepository();
 
 export const obtenerVideojuegoPorId = new ObtenerVideojuegoPorId(
-    mockVideojuegosRepository
+    postgresqlVideojuegosRepository
 );
 
 export const obtenerTodosVideojuegos = new ObtenerTodosVideojuegos(
-    mockVideojuegosRepository
+    postgresqlVideojuegosRepository
 );
 
-export const crearVideojuego = new CrearVideojuego(mockVideojuegosRepository);
+export const crearVideojuego = new CrearVideojuego(
+    postgresqlVideojuegosRepository
+);
 
 export const actualizarVideojuego = new ActualizarVideojuego(
-    mockVideojuegosRepository
+    postgresqlVideojuegosRepository
 );
 
 export const eliminarVideojuego = new EliminarVideojuego(
-    mockVideojuegosRepository
+    postgresqlVideojuegosRepository
 );
 
 export const videojuegoControlador = new VideojuegoControlador(

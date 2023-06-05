@@ -6,7 +6,7 @@ export class ObtenerTodosVideojuegos {
     async ejecutar() {
         const videojuegosTodos = await this.videojuegoRepository.obtenerTodo();
 
-        console.log(videojuegosTodos.length);
+        console.log('Total videojuegos obtenidos:', videojuegosTodos.length);
         return videojuegosTodos;
     }
 }
