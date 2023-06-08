@@ -1,7 +1,7 @@
 import { Videojuego } from './videojuego';
 
 export interface VideojuegoRepository {
-    obtenerPorId(idVideojuego: string): Promise<Videojuego | null>;
+    obtenerPorId(idVideojuego: number): Promise<Videojuego | null>;
 
     obtenerTodo(): Promise<Videojuego[] | []>;
 
@@ -13,12 +13,12 @@ export interface VideojuegoRepository {
     ): Promise<Videojuego>;
 
     actualizar(
-        idVideojuego: string,
+        idVideojuego: number,
         nombreVideojuego: string,
         precioVideojuego: number,
         imagenVideojuego: string,
         stockVideojuego: number
     ): Promise<Videojuego>;
 
-    eliminar(idVideojuego: string): Promise<Videojuego>;
+    eliminar(idVideojuego: number): Promise<Videojuego>;
 }

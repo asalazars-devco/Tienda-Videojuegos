@@ -3,7 +3,7 @@ import { VideojuegoRepository } from '../dominio/videojuegoRepository';
 export class ObtenerVideojuegoPorId {
     constructor(private readonly videojuegoRepository: VideojuegoRepository) {}
 
-    async ejecutar(idVideojuego: string) {
+    async ejecutar(idVideojuego: number) {
         const videojuego = await this.videojuegoRepository.obtenerPorId(
             idVideojuego
         );

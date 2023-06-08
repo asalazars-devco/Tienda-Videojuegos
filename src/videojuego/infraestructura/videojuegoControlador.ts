@@ -23,7 +23,7 @@ export class VideojuegoControlador {
 
         try {
             const videojuego = await this.obtenerVideojuegoPorId.ejecutar(
-                idVideojuego
+                Number(idVideojuego)
             );
             res.status(200).send(videojuego);
         } catch (error: any) {
@@ -67,7 +67,7 @@ export class VideojuegoControlador {
         try {
             const videojuegoActualizado =
                 await this.actualizarVideojuego.ejecutar(
-                    idVideojuego,
+                    Number(idVideojuego),
                     nombre,
                     precio,
                     imagen,
@@ -90,7 +90,7 @@ export class VideojuegoControlador {
 
         try {
             const videojuegoEliminado = await this.eliminarVideojuego.ejecutar(
-                idVideojuego
+                Number(idVideojuego)
             );
             res.send(videojuegoEliminado);
         } catch (error: any) {

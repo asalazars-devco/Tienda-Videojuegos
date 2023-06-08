@@ -6,7 +6,7 @@ import Database from '../../postgreSQL_DB';
 const database = Database.getInstance();
 
 export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
-    async obtenerPorId(idVideojuego: string): Promise<Videojuego | null> {
+    async obtenerPorId(idVideojuego: number): Promise<Videojuego | null> {
         const query = 'SELECT * FROM videojuegos WHERE id = $1';
         const values = [idVideojuego];
 
@@ -17,7 +17,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
         } else {
             const videojuego = resultado[0];
             return new Videojuego(
-                String(videojuego.id),
+                videojuego.id,
                 videojuego.nombre,
                 Number(videojuego.precio),
                 videojuego.imagen,
@@ -39,7 +39,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
                 stock: number;
             }) => {
                 return new Videojuego(
-                    String(videojuego.id),
+                    videojuego.id,
                     videojuego.nombre,
                     Number(videojuego.precio),
                     videojuego.imagen,
@@ -69,7 +69,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
             const videojuego = resultado[0];
 
             return new Videojuego(
-                String(videojuego.id),
+                videojuego.id,
                 videojuego.nombre,
                 Number(videojuego.precio),
                 videojuego.imagen,
@@ -83,7 +83,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
                 const resultado = await database.query(query, values);
                 const videojuego = resultado[0];
                 return new Videojuego(
-                    String(videojuego.id),
+                    videojuego.id,
                     videojuego.nombre,
                     Number(videojuego.precio),
                     videojuego.imagen,
@@ -101,7 +101,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
     }
 
     async actualizar(
-        idVideojuego: string,
+        idVideojuego: number,
         nombreVideojuego: string,
         precioVideojuego: number,
         imagenVideojuego: string,
@@ -119,7 +119,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
 
         try {
             const videojuegoActualizado = new Videojuego(
-                String(idVideojuego),
+                idVideojuego,
                 nombreVideojuego,
                 Number(precioVideojuego),
                 imagenVideojuego,
@@ -147,7 +147,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
         }
     }
 
-    async eliminar(idVideojuego: string): Promise<Videojuego> {
+    async eliminar(idVideojuego: number): Promise<Videojuego> {
         const query = 'DELETE FROM videojuegos WHERE id = $1 RETURNING *';
         const values = [idVideojuego];
 
@@ -160,7 +160,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
         } else {
             const videojuego = resultado[0];
             return new Videojuego(
-                String(videojuego.id),
+                videojuego.id,
                 videojuego.nombre,
                 Number(videojuego.precio),
                 videojuego.imagen,

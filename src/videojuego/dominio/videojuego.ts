@@ -1,15 +1,13 @@
 export class Videojuego {
     constructor(
-        readonly id: string,
+        readonly id: number,
         readonly nombre: string,
         readonly precio: number,
         readonly imagen: string,
         readonly stock: number
     ) {
-        if (typeof id !== 'string' || id.length === 0) {
-            throw new Error(
-                'ID tiene que ser de tipo string y no puede ser vacio'
-            );
+        if (typeof id !== 'number') {
+            throw new Error('ID tiene que ser de tipo number');
         }
         if (typeof nombre !== 'string' || nombre.length === 0) {
             throw new Error(

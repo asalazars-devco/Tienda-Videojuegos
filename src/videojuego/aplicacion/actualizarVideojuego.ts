@@ -4,7 +4,7 @@ export class ActualizarVideojuego {
     constructor(private readonly videojuegoRepository: VideojuegoRepository) {}
 
     async ejecutar(
-        idVideojuego: string,
+        idVideojuego: number,
         nombreVideojuego: string,
         precioVideojuego: number,
         imagenVideojuego: string,
