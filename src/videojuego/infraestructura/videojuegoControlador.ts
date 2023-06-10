@@ -43,6 +43,7 @@ export class VideojuegoControlador {
 
         try {
             const videojuegoNuevo = await this.crearVideojuego.ejecutar(
+                null,
                 nombre,
                 precio,
                 imagen,

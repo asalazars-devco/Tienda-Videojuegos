@@ -6,6 +6,7 @@ export interface VideojuegoRepository {
     obtenerTodo(): Promise<Videojuego[] | []>;
 
     crear(
+        idVideojuego: number | null,
         nombreVideojuego: string,
         precioVideojuego: number,
         imagenVideojuego: string,

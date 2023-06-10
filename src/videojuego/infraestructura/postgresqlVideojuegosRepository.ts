@@ -50,19 +50,35 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
     }
 
     async crear(
+        idVideojuego: number | null,
         nombreVideojuego: string,
         precioVideojuego: number,
         imagenVideojuego: string,
         stockVideojuego: number
     ): Promise<Videojuego> {
-        const query =
-            'INSERT INTO videojuegos (nombre, precio, imagen, stock) VALUES ($1, $2, $3, $4) RETURNING *';
-        const values = [
-            nombreVideojuego,
-            precioVideojuego,
-            imagenVideojuego,
-            stockVideojuego,
-        ];
+        let query;
+        let values;
+
+        if (idVideojuego) {
+            query =
+                'INSERT INTO videojuegos (id, nombre, precio, imagen, stock) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+            values = [
+                idVideojuego,
+                nombreVideojuego,
+                precioVideojuego,
+                imagenVideojuego,
+                stockVideojuego,
+            ];
+        } else {
+            query =
+                'INSERT INTO videojuegos (nombre, precio, imagen, stock) VALUES ($1, $2, $3, $4) RETURNING *';
+            values = [
+                nombreVideojuego,
+                precioVideojuego,
+                imagenVideojuego,
+                stockVideojuego,
+            ];
+        }
 
         try {
             const resultado = await database.query(query, values);
@@ -134,6 +150,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
                 );
                 console.log('Se crea el videojuego');
                 return this.crear(
+                    idVideojuego,
                     nombreVideojuego,
                     precioVideojuego,
                     imagenVideojuego,
