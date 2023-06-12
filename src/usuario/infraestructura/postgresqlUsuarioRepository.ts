@@ -39,7 +39,7 @@ export class PostgresqlUsuarioRepository implements UsuarioRepository {
         const resultado = await database.query(query, values);
 
         if (resultado.length === 0) {
-            throw new Error(`No existe usuario con ID ${idUsuario}`);
+            throw new Error(`Usuario no encontrado`);
         } else {
             const usuario = resultado[0];
             const usuarioObtenido = new Usuario(
@@ -117,7 +117,6 @@ export class PostgresqlUsuarioRepository implements UsuarioRepository {
                     usuario.email,
                     usuario.rol
                 );
-                // await usuarioCreado.colocarPassword(passwordUsuario);
                 usuarioCreado.colocarId(usuario.id);
 
                 return usuarioCreado;
@@ -188,7 +187,7 @@ export class PostgresqlUsuarioRepository implements UsuarioRepository {
         const resultado = await database.query(query, values);
 
         if (resultado.length === 0) {
-            throw new Error(`Usuario con ID ${idUsuario} no encontrado`);
+            throw new Error(`Usuario no encontrado`);
         } else {
             const usuario = resultado[0];
             const usuarioEliminado = new Usuario(
@@ -210,13 +209,17 @@ export class PostgresqlUsuarioRepository implements UsuarioRepository {
         rol: RolUsuario;
         token: string;
     }> {
+        if (!emailUsuario || !passwordUsuario) {
+            throw new Error('Credenciales no suministradas');
+        }
+
         const resultado = await database.query(
             'SELECT * FROM usuarios WHERE email = $1',
             [emailUsuario]
         );
 
         if (resultado.length === 0) {
-            throw new Error('Email del usuario no encontrado');
+            throw new Error('Credenciales invalidas');
         }
 
         const usuario = resultado[0];
@@ -235,7 +238,7 @@ export class PostgresqlUsuarioRepository implements UsuarioRepository {
                 token: token,
             };
         } else {
-            throw new Error('Contraseña incorrecta');
+            throw new Error('Credenciales invalidas');
         }
     }
 

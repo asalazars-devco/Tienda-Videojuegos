@@ -7,7 +7,7 @@ export class ObtenerOrdenPorId {
         const orden = await this.ordenRepository.obtenerPorId(idOrden);
 
         if (!orden) {
-            throw new Error(`No existe orden con ID: ${idOrden}`);
+            throw new Error(`Orden no encontrada`);
         }
 
         console.log('orden obtenida: ', idOrden);

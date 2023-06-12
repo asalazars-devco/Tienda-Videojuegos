@@ -7,7 +7,7 @@ export class EliminarOrden {
         const orden = await this.ordenRepository.eliminar(idOrden);
 
         if (!orden) {
-            throw new Error(`No existe orden con ID: ${idOrden}`);
+            throw new Error(`Orden no encontrada`);
         }
 
         console.log('orden eliminada');

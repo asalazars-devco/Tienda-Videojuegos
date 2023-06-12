@@ -6,6 +6,8 @@ import { CrearVideojuego } from '../aplicacion/crearVideojuego';
 import { ActualizarVideojuego } from '../aplicacion/actualizarVideojuego';
 import { EliminarVideojuego } from '../aplicacion/eliminarVideojuego';
 
+import esAdmin from '../../helpers/esAdmin';
+
 export class VideojuegoControlador {
     constructor(
         private readonly obtenerVideojuegoPorId: ObtenerVideojuegoPorId,
@@ -27,19 +29,34 @@ export class VideojuegoControlador {
             );
             res.status(200).send(videojuego);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
-            res.status(404).sendStatus(404);
+            if (error.message.includes('sintaxis')) {
+                res.status(400).send({ error: 'ID invalido' });
+            } else {
+                res.status(404).send({ error: error.message });
+            }
         }
     }
 
     async execObtenerTodosVideojuegos(req: Request, res: Response) {
-        const videojuegosTodos = await this.obtenerTodosVideojuegos.ejecutar();
-
-        res.status(200).send(videojuegosTodos);
+        try {
+            const videojuegosTodos =
+                await this.obtenerTodosVideojuegos.ejecutar();
+            res.status(200).send(videojuegosTodos);
+        } catch (error) {
+            res.status(500).send({
+                error: 'Error al cargar los videojuegos',
+            });
+        }
     }
 
     async execCrearVideojuego(req: Request, res: Response) {
         const { nombre, precio, imagen, stock } = req.body;
+
+        const usuarioEsAdmin = esAdmin(req.usuario?.rol);
+
+        if (!usuarioEsAdmin) {
+            return res.status(403).send({ error: 'Acceso no permitido' });
+        }
 
         try {
             const videojuegoNuevo = await this.crearVideojuego.ejecutar(
@@ -56,7 +73,7 @@ export class VideojuegoControlador {
             if (error.message.includes('llave duplicada')) {
                 res.status(201).sendStatus(201);
             } else {
-                res.status(400).sendStatus(400);
+                res.status(400).send({ error: error.message });
             }
         }
     }
@@ -64,6 +81,12 @@ export class VideojuegoControlador {
     async execActualizarVideojuego(req: Request, res: Response) {
         const idVideojuego = req.params.id;
         const { nombre, precio, imagen, stock } = req.body;
+
+        const usuarioEsAdmin = esAdmin(req.usuario?.rol);
+
+        if (!usuarioEsAdmin) {
+            return res.status(403).send({ error: 'Acceso no permitido' });
+        }
 
         try {
             const videojuegoActualizado =
@@ -78,10 +101,10 @@ export class VideojuegoControlador {
             res.status(201).send(videojuegoActualizado);
         } catch (error: any) {
             console.log('mensaje de Error:', error.message);
-            if (error.message.includes('ID')) {
-                res.status(404).sendStatus(404);
+            if (error.message.includes('sintaxis')) {
+                res.status(400).send({ error: 'ID invalido' });
             } else {
-                res.status(400).sendStatus(400);
+                res.status(400).send({ error: error.message });
             }
         }
     }
@@ -89,14 +112,24 @@ export class VideojuegoControlador {
     async execEliminarVideojuego(req: Request, res: Response) {
         const idVideojuego = req.params.id;
 
+        const usuarioEsAdmin = esAdmin(req.usuario?.rol);
+
+        if (!usuarioEsAdmin) {
+            return res.status(403).send({ error: 'Acceso no permitido' });
+        }
+
         try {
             const videojuegoEliminado = await this.eliminarVideojuego.ejecutar(
                 Number(idVideojuego)
             );
-            res.send(videojuegoEliminado);
+            res.status(200).send(videojuegoEliminado);
         } catch (error: any) {
             console.log('mensaje de Error:', error.message);
-            res.status(404).sendStatus(404);
+            if (error.message.includes('sintaxis')) {
+                res.status(400).send({ error: 'ID invalido' });
+            } else {
+                res.status(404).send({ error: error.message });
+            }
         }
     }
 }

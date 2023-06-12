@@ -38,7 +38,7 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
         const resultado = await database.query(query, values);
 
         if (resultado.length === 0) {
-            throw new Error(`No existe una orden con ID ${idOrden}`);
+            throw new Error(`Orden no encontrada`);
         } else {
             const orden = resultado[0];
             const ordenObtenida = new Orden(orden.videojuegos_comprados);
@@ -74,13 +74,13 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
 
                     if (!videojuego.cantidad) {
                         throw new Error(
-                            'La cantidad a comprar del videojuego no esta especificada'
+                            `Cantidad a comprar del videojuego con ID ${videojuego.id} no especificada`
                         );
                     }
 
                     if (videojuegoComprado.stock < videojuego.cantidad) {
                         throw new Error(
-                            'No hay suficiente stock disponible del videojuego'
+                            `No hay suficiente stock disponible del videojuego con ID ${videojuego.id}`
                         );
                     }
 
@@ -135,6 +135,11 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
 
             return ordenCreada;
         } catch (error: any) {
+            if (error.message.includes('sintaxis')) {
+                throw new Error(
+                    'Campos de los videojuegos comprados mal diligenciados'
+                );
+            }
             throw new Error(error.message);
         }
     }
@@ -146,7 +151,7 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
         const resultado = await database.query(query, values);
 
         if (resultado.length === 0) {
-            throw new Error(`Orden con ID ${idOrden} no encontrada`);
+            throw new Error(`Orden no encontrada`);
         } else {
             const orden = resultado[0];
             const ordenEliminada = new Orden(orden.videojuegos_comprados);

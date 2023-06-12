@@ -20,7 +20,7 @@ export class ActualizarVideojuego {
             );
 
         if (!videojuegoActualizado) {
-            throw new Error(`No existe videojuego con ID: ${idVideojuego}`);
+            throw new Error(`Videojuego no encontrado`);
         }
 
         console.log('juego actualizado:', videojuegoActualizado.nombre);

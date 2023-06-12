@@ -1,5 +1,6 @@
 import express from 'express';
 import { videojuegoControlador } from './dependencias';
+import { autenticacion } from '../../middlewares/autenticacion';
 
 const videojuegoRouter = express.Router();
 
@@ -17,16 +18,19 @@ videojuegoRouter.get(
 
 videojuegoRouter.post(
     '/',
+    autenticacion,
     videojuegoControlador.execCrearVideojuego.bind(videojuegoControlador)
 );
 
 videojuegoRouter.put(
     '/:id',
+    autenticacion,
     videojuegoControlador.execActualizarVideojuego.bind(videojuegoControlador)
 );
 
 videojuegoRouter.delete(
     '/:id',
+    autenticacion,
     videojuegoControlador.execEliminarVideojuego.bind(videojuegoControlador)
 );
 

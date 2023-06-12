@@ -1,0 +1,993 @@
+openapi: 3.0.3
+info:
+  title: Tienda de Videojuegos DEVCO
+  description: |-
+    API para una tienda de videojuegos, que permite realizar las operaciones
+    básicas (CRUD). 
+    
+    Permite gestionar los videojuegos, las ordenes y los
+    usuarios de la tienda.
+  contact:
+    email: asalazars@devco.com.co
+  version: 1.0.0
+tags:
+  - name: videojuego
+    description: Gestiona los videojuegos de la tienda
+  - name: orden
+    description: Gestiona las ordenes de la tienda
+  - name: usuario
+    description: Gestiona los usuarios de la tienda
+paths:
+  /videojuego:
+    get:
+      tags:
+        - videojuego
+      summary: Obtiene todos los videojuegos de la tienda
+      description: Obtiene todo el inventario de videojuegos de la tienda
+      operationId: obtenerTodosVideojugos
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Videojuego'
+    post:
+      tags:
+        - videojuego
+      summary: Agrega un nuevo videojuego a la tienda
+      description: Agrega un nuevo videojuego al inventario de la tienda
+      operationId: crearVideojuego
+      requestBody:
+        description: Crea un nuevo videojuego en la tienda
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: videojuego
+                precio:
+                  type: number
+                  example: 100000
+                imagen:
+                  type: string
+                  minLength: 1
+                  example: http://url-image.com
+                stock:
+                  type: integer
+                  example: 5
+          application/xml:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: videojuego
+                precio:
+                  type: number
+                  example: 100000
+                imagen:
+                  type: string
+                  minLength: 1
+                  example: http://url-image.com
+                stock:
+                  type: integer
+                  example: 5
+              xml:
+                name: videojuego
+        required: true
+      responses:
+        '201':
+          description: Creación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Videojuego'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Videojuego'
+        '400':
+          description: Datos inválidos
+      security:
+        - bearerAuth: []
+  /videojuego/{IdVideojuego}:
+    get:
+      tags:
+        - videojuego
+      summary: Obtiene un videojuego por su id
+      description: Devuelve un único videojuego
+      operationId: obtenerVideojuegoPorId
+      parameters:
+        - name: IdVideojuego
+          in: path
+          description: ID del videojuego a obtener
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Videojuego'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Videojuego'
+        '400':
+          description: ID inválido
+        '404':
+          description: Videojuego no encontrado
+    put:
+      tags:
+        - videojuego
+      summary: Actualiza un videojuego
+      description: Actualiza un videojuego con los datos suministrados
+      operationId: actualizarVideojuego
+      parameters:
+        - name: IdVideojuego
+          in: path
+          description: ID del videojuego a actualizar
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Actualiza un videojuego de la tienda
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: videojuego
+                precio:
+                  type: number
+                  example: 100000
+                imagen:
+                  type: string
+                  minLength: 1
+                  example: http://url-image.com
+                stock:
+                  type: integer
+                  example: 5
+          application/xml:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: videojuego
+                precio:
+                  type: number
+                  example: 100000
+                imagen:
+                  type: string
+                  minLength: 1
+                  example: http://url-image.com
+                stock:
+                  type: integer
+                  example: 5
+              xml:
+                name: videojuego
+        required: true
+      responses:
+        '201':
+          description: Actualización exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Videojuego'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Videojuego'
+        '400':
+          description: Datos inválidos
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - videojuego
+      summary: Elimina un videojuego
+      description: Elimina un videojuego del inventario
+      operationId: eliminarVideojuego
+      parameters:
+        - name: IdVideojuego
+          in: path
+          description: ID del videojuego a actualizar
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Videojuego'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Videojuego'
+        '400':
+          description: ID inválido
+        '404':
+          description: Videojuego no encontrado
+      security:
+        - bearerAuth: []
+  /orden:
+    get:
+      tags:
+        - orden
+      summary: Obtiene todas las ordenes de la tienda
+      description: Obtiene todas las ordenes realizadas en la tienda
+      operationId: obtenerTodasOrdenes
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Orden'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - orden
+      summary: Crea una nueva orden en la tienda
+      description: Genera una nueva orden en la tienda
+      operationId: crearOrden
+      requestBody:
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  videojuegos_comprados:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        cantidad:
+                          type: integer
+                    example:
+                      - id: 1
+                        cantidad: 2
+                      - id: 2
+                        cantidad: 3
+          application/xml:
+            schema:
+                type: object
+                properties:
+                  videojuegos_comprados:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        cantidad:
+                          type: integer
+                    example:
+                      - id: 1
+                        cantidad: 2
+                      - id: 2
+                        cantidad: 3
+                xml:
+                  name: orden
+        required: true
+      responses:
+        '201':
+          description: Creación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orden'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Orden'
+        '400':
+          description: Datos inválidos
+        '404':
+          description: Videojuego dentro la orden no encontrado
+  /orden/{idOrden}:
+    get:
+      tags:
+        - orden
+      summary: Obtiene una orden por id
+      description: Devuelve una única orden
+      operationId: obtenerOrdenPorId
+      parameters:
+        - name: idOrden
+          in: path
+          description: ID de la orden que se quiere obtener
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orden'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Orden'
+        '400':
+          description: ID inválido
+        '404':
+          description: Orden no encontrada
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - orden
+      summary: Elimina una orden
+      description: Elimina una orden
+      operationId: eliminarOrden
+      parameters:
+        - name: idOrden
+          in: path
+          description: ID de la orden que se quiere obtener
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orden'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Orden'
+        '400':
+          description: ID inválido
+        '404':
+          description: Orden no encontrada
+      security:
+        - bearerAuth: []
+  /usuario:
+    get:
+      tags:
+        - usuario
+      summary: Obtiene todos los usuarios de la tienda
+      description: Obtiene todos los usuarios registrados de la tienda
+      operationId: obtenerTodosUsuarios
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    nombre:
+                      type: string
+                      minLength: 1
+                      example: usuario
+                    email:
+                      type: string
+                      format: email
+                      example: usuario@mail.com
+                    rol:
+                      type: string
+                      example: cliente
+    post:
+      tags:
+        - usuario
+      summary: Crear un usuario
+      description: Crear un usuario de tipo cliente
+      operationId: crearUsuario
+      requestBody:
+        description: Usuario a crear
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: usuario
+                email:
+                  type: string
+                  format: email
+                  example: usuario@mail.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: user123
+                rol:
+                  type: string
+                  example: cliente
+          application/xml:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: usuario
+                email:
+                  type: string
+                  format: email
+                  example: usuario@mail.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: user123
+                rol:
+                  type: string
+                  example: cliente
+              xml:
+                name: usuario
+        required: true
+      responses:
+        '201':
+          description: Creación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: usuario
+                  email:
+                    type: string
+                    format: email
+                    example: usuario@mail.com
+                  rol:
+                    type: string
+                    example: cliente
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: usuario
+                  email:
+                    type: string
+                    format: email
+                    example: usuario@mail.com
+                  rol:
+                    type: string
+                    example: cliente
+                xml:
+                  name: usuario
+        '400':
+          description: Datos inválidos
+  /usuario/admin:
+    post:
+      tags:
+        - usuario
+      summary: Crear un usuario de tipo admin
+      description: Crea un usuario de tipo admin (solo un admin tiene permiso de realizar esta acción)
+      operationId: crearUsuarioAdmin
+      requestBody:
+        description: Usuario a crear
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: admin
+                email:
+                  type: string
+                  format: email
+                  example: admin@mail.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: admin123
+                rol:
+                  type: string
+                  example: admin
+          application/xml:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: admin
+                email:
+                  type: string
+                  format: email
+                  example: admin@mail.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: admin123
+                rol:
+                  type: string
+                  example: admin
+              xml:
+                name: usuario
+        required: true
+      responses:
+        '201':
+          description: Creación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: admin
+                  email:
+                    type: string
+                    format: email
+                    example: admin@mail.com
+                  rol:
+                    type: string
+                    example: admin        
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: admin
+                  email:
+                    type: string
+                    format: email
+                    example: admin@mail.com
+                  rol:
+                    type: string
+                    example: admin
+                xml:
+                  name: usuario
+        '400':
+          description: Datos inválidos
+      security:
+        - bearerAuth: []
+  /usuario/login:
+    post:
+      tags:
+        - usuario
+      summary: Usuario se autentica en el sistema
+      description: ''
+      operationId: loginUsuario
+      requestBody:
+        description: Credenciales para acceder al sistema
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin@mail.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: admin123
+          application/xml:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin@mail.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: admin123
+              xml:
+                name: usuario
+        required: true
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: admin
+                  email:
+                    type: string
+                    format: email
+                    example: admin@mail.com
+                  rol:
+                    type: string
+                    example: admin
+                  token:
+                    type: string
+                    example: token 
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: admin
+                  email:
+                    type: string
+                    format: email
+                    example: admin@mail.com
+                  rol:
+                    type: string
+                    example: admin
+                  token:
+                    type: string
+                    example: token
+                xml:
+                  name: usuario
+        '400':
+          description: Credenciales no suministradas
+        '401':
+          description: Credenciales inválidas
+  /usuario/logout:
+    post:
+      tags:
+        - usuario
+      summary: Usuario cierra la sesión en el sistema
+      description: ''
+      operationId: logoutUsuario
+      parameters: []
+      responses:
+        '200':
+          description: Operación exitosa
+      security:
+        - bearerAuth: []
+  /user/{idUsuario}:
+    get:
+      tags:
+        - usuario
+      summary: Obtiene un usuario por id
+      description: Obtiene un único usuario
+      operationId: obtenerUsuarioPorId
+      parameters:
+        - name: idUsuario
+          in: path
+          description: 'ID del usuario que se quiere obtener'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: usuario
+                  email:
+                    type: string
+                    format: email
+                    example: usuario@mail.com
+                  rol:
+                    type: string
+                    example: cliente
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: usuario
+                  email:
+                    type: string
+                    format: email
+                    example: usuario@mail.com
+                  rol:
+                    type: string
+                    example: cliente
+                xml:
+                  name: usuario
+        '400':
+          description: ID inválido
+        '404':
+          description: Usuario no encontrado
+    put:
+      tags:
+        - usuario
+      summary: Actualiza un usuario
+      description: Actualiza un usuario registrado en la tienda, solo puede ser realizado por un usuario autenticado
+      operationId: actualizarUsuario
+      parameters:
+        - name: idUsuario
+          in: path
+          description: 'ID del usuario que se quiere actualizar'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Usuario a actualizar
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: admin
+                email:
+                  type: string
+                  format: email
+                  example: admin@mail.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: admin123
+                rol:
+                  type: string
+                  example: admin
+          application/xml:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  minLength: 1
+                  example: admin
+                email:
+                  type: string
+                  format: email
+                  example: admin@mail.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: admin123
+                rol:
+                  type: string
+                  example: admin
+              xml:
+                name: usuario
+        required: true
+      responses:
+        '201':
+          description: Actualización exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: admin
+                  email:
+                    type: string
+                    format: email
+                    example: admin@mail.com
+                  rol:
+                    type: string
+                    example: admin
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: admin
+                  email:
+                    type: string
+                    format: email
+                    example: admin@mail.com
+                  rol:
+                    type: string
+                    example: admin
+                xml:
+                  name: usuario
+        '400':
+          description: Datos inválidos
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - usuario
+      summary: Elimina un usuario
+      description: Elimina un usuario registrado en la tienda, solo puede ser realizado por un usuario autenticado
+      operationId: eliminarUsuario
+      parameters:
+        - name: idUsuario
+          in: path
+          description: 'ID del usuario que se quiere eliminar'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: admin
+                  email:
+                    type: string
+                    format: email
+                    example: admin@mail.com
+                  rol:
+                    type: string
+                    example: admin
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  nombre:
+                    type: string
+                    minLength: 1
+                    example: admin
+                  email:
+                    type: string
+                    format: email
+                    example: admin@mail.com
+                  rol:
+                    type: string
+                    example: admin
+                xml:
+                  name: usuario
+        '400':
+          description: ID inválido
+        '404':
+          description: Usuario no encontrado
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    Videojuego:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          minLength: 1
+          example: videojuego
+        precio:
+          type: number
+          example: 100000
+        imagen:
+          type: string
+          minLength: 1
+          example: http://url-image.com
+        stock:
+          type: integer
+          example: 5
+      xml:
+        name: videojuego
+    Orden:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        videojuegos_comprados:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              cantidad:
+                type: integer
+          example:
+            - id: 1
+              cantidad: 2
+            - id: 2
+              cantidad: 3
+        valor_total:
+          type: number
+          example: 100000
+        cantidad:
+          type: integer
+          example: 5
+      xml:
+        name: orden
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          minLength: 1
+          example: usuario
+        email:
+          type: string
+          format: email
+          example: usuario@mail.com
+        password:
+          type: string
+          format: password
+          minLength: 6
+          example: user123
+        rol:
+          type: string
+          example: cliente
+      xml:
+        name: usuario
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

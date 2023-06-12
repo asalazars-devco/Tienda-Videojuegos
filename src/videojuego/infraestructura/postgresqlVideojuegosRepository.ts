@@ -171,9 +171,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
         const resultado = await database.query(query, values);
 
         if (resultado.length === 0) {
-            throw new Error(
-                `ID ${idVideojuego} no encontrado en la base de datos`
-            );
+            throw new Error(`Videojuego no encontrado`);
         } else {
             const videojuego = resultado[0];
             return new Videojuego(

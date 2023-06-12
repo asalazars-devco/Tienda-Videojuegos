@@ -9,7 +9,7 @@ export class EliminarVideojuego {
         );
 
         if (!videojuego) {
-            throw new Error(`No existe videojuego con ID: ${idVideojuego}`);
+            throw new Error(`Videojuego no encontrado`);
         }
 
         console.log('videojuego eliminado: ', videojuego.nombre);

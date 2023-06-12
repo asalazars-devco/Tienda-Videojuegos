@@ -5,6 +5,8 @@ import { ObtenerOrdenPorId } from '../aplicacion/obtenerOrdenPorId';
 import { CrearOrden } from '../aplicacion/crearOrden';
 import { EliminarOrden } from '../aplicacion/eliminarOrden';
 
+import esAdmin from '../../helpers/esAdmin';
+
 export class OrdenControlador {
     constructor(
         private readonly obtenerTodasOrdenes: ObtenerTodasOrdenes,
@@ -14,13 +16,31 @@ export class OrdenControlador {
     ) {}
 
     async execObtenerTodasOrdenes(req: Request, res: Response) {
-        const ordenesTodas = await this.obtenerTodasOrdenes.ejecutar();
+        try {
+            const usuarioEsAdmin = esAdmin(req.usuario?.rol);
 
-        res.status(200).send(ordenesTodas);
+            if (!usuarioEsAdmin) {
+                return res.status(403).send({ error: 'Acceso no permitido' });
+            }
+
+            const ordenesTodas = await this.obtenerTodasOrdenes.ejecutar();
+
+            res.status(200).send(ordenesTodas);
+        } catch (error) {
+            res.status(500).send({
+                error: 'Error al cargar las ordenes',
+            });
+        }
     }
 
     async execObtenerOrdenPorId(req: Request, res: Response) {
         const idOrden = req.params.id;
+
+        const usuarioEsAdmin = esAdmin(req.usuario?.rol);
+
+        if (!usuarioEsAdmin) {
+            return res.status(403).send({ error: 'Acceso no permitido' });
+        }
 
         try {
             const orden = await this.obtenerOrdenPorId.ejecutar(
@@ -29,7 +49,11 @@ export class OrdenControlador {
             res.status(200).send(orden);
         } catch (error: any) {
             console.log('mensaje de Error:', error.message);
-            res.status(404).sendStatus(404);
+            if (error.message.includes('sintaxis')) {
+                res.status(400).send({ error: 'ID invalido' });
+            } else {
+                res.status(404).send({ error: error.message });
+            }
         }
     }
 
@@ -44,21 +68,35 @@ export class OrdenControlador {
             res.status(201).send(ordenNueva);
         } catch (error: any) {
             console.log('mensaje de Error:', error.message);
-            res.status(400).sendStatus(400);
+            if (error.message.includes('no encontrado')) {
+                res.status(404).send({ error: error.message });
+            } else {
+                res.status(400).send({ error: error.message });
+            }
         }
     }
 
     async execEliminarOrden(req: Request, res: Response) {
         const idOrden = req.params.id;
 
+        const usuarioEsAdmin = esAdmin(req.usuario?.rol);
+
+        if (!usuarioEsAdmin) {
+            return res.status(403).send({ error: 'Acceso no permitido' });
+        }
+
         try {
             const ordenEliminada = await this.eliminarOrden.ejecutar(
                 Number(idOrden)
             );
-            res.send(ordenEliminada);
+            res.status(200).send(ordenEliminada);
         } catch (error: any) {
             console.log('mensaje de Error:', error.message);
-            res.status(404).sendStatus(404);
+            if (error.message.includes('sintaxis')) {
+                res.status(400).send({ error: 'ID invalido' });
+            } else {
+                res.status(404).send({ error: error.message });
+            }
         }
     }
 }
