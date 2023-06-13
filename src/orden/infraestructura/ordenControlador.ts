@@ -6,7 +6,6 @@ import { CrearOrden } from '../aplicacion/crearOrden';
 import { EliminarOrden } from '../aplicacion/eliminarOrden';
 
 import esAdmin from '../../helpers/esAdmin';
-import verificarToken from '../../helpers/verificarToken';
 
 export class OrdenControlador {
     constructor(
