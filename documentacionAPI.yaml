@@ -38,7 +38,7 @@ paths:
       tags:
         - videojuego
       summary: Agrega un nuevo videojuego a la tienda
-      description: Agrega un nuevo videojuego al inventario de la tienda
+      description: Agrega un nuevo videojuego al inventario de la tienda. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: crearVideojuego
       requestBody:
         description: Crea un nuevo videojuego en la tienda
@@ -128,7 +128,7 @@ paths:
       tags:
         - videojuego
       summary: Actualiza un videojuego
-      description: Actualiza un videojuego con los datos suministrados
+      description: Actualiza un videojuego con los datos suministrados. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: actualizarVideojuego
       parameters:
         - name: IdVideojuego
@@ -197,7 +197,7 @@ paths:
       tags:
         - videojuego
       summary: Elimina un videojuego
-      description: Elimina un videojuego del inventario
+      description: Elimina un videojuego del inventario. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: eliminarVideojuego
       parameters:
         - name: IdVideojuego
@@ -227,7 +227,7 @@ paths:
       tags:
         - orden
       summary: Obtiene todas las ordenes de la tienda
-      description: Obtiene todas las ordenes realizadas en la tienda
+      description: Obtiene todas las ordenes realizadas en la tienda. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: obtenerTodasOrdenes
       responses:
         '200':
@@ -306,7 +306,7 @@ paths:
       tags:
         - orden
       summary: Obtiene una orden por id
-      description: Devuelve una única orden
+      description: Devuelve una única orden. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: obtenerOrdenPorId
       parameters:
         - name: idOrden
@@ -335,7 +335,7 @@ paths:
       tags:
         - orden
       summary: Elimina una orden
-      description: Elimina una orden
+      description: Elimina una orden. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: eliminarOrden
       parameters:
         - name: idOrden
@@ -365,7 +365,7 @@ paths:
       tags:
         - usuario
       summary: Obtiene todos los usuarios de la tienda
-      description: Obtiene todos los usuarios registrados de la tienda
+      description: Obtiene todos los usuarios registrados de la tienda. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: obtenerTodosUsuarios
       responses:
         '200':
@@ -391,6 +391,8 @@ paths:
                     rol:
                       type: string
                       example: cliente
+      security:
+        - bearerAuth: []
     post:
       tags:
         - usuario
@@ -492,7 +494,7 @@ paths:
       tags:
         - usuario
       summary: Crear un usuario de tipo admin
-      description: Crea un usuario de tipo admin (solo un admin tiene permiso de realizar esta acción)
+      description: Crea un usuario de tipo admin. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: crearUsuarioAdmin
       requestBody:
         description: Usuario a crear
@@ -688,8 +690,8 @@ paths:
     get:
       tags:
         - usuario
-      summary: Obtiene un usuario por id
-      description: Obtiene un único usuario
+      summary: Obtiene un usuario por id.
+      description: Obtiene un único usuario. Esta acción solo esta autorizada para usuarios tipo admin.
       operationId: obtenerUsuarioPorId
       parameters:
         - name: idUsuario
@@ -744,6 +746,8 @@ paths:
           description: ID inválido
         '404':
           description: Usuario no encontrado
+      security:
+        - bearerAuth: []
     put:
       tags:
         - usuario

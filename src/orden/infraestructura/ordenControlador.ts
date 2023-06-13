@@ -48,7 +48,6 @@ export class OrdenControlador {
             );
             res.status(200).send(orden);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             if (error.message.includes('sintaxis')) {
                 res.status(400).send({ error: 'ID invalido' });
             } else {
@@ -65,9 +64,9 @@ export class OrdenControlador {
                 videojuegos_comprados
             );
 
+            res.set('Content-Type', 'text/plain');
             res.status(201).send(ordenNueva);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             if (error.message.includes('no encontrado')) {
                 res.status(404).send({ error: error.message });
             } else {
@@ -91,7 +90,6 @@ export class OrdenControlador {
             );
             res.status(200).send(ordenEliminada);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             if (error.message.includes('sintaxis')) {
                 res.status(400).send({ error: 'ID invalido' });
             } else {

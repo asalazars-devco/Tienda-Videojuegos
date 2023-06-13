@@ -4,11 +4,11 @@ import dotenv from 'dotenv';
 // Cargar las variables de entorno desde el archivo .env
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'default_secret';
 
 const verificarToken = (token: string) => {
     try {
-        const decoded = jwt.verify(token, JWT_SECRET!);
+        const decoded = jwt.verify(token, JWT_SECRET);
         if (typeof decoded !== 'string') {
             return decoded;
         }

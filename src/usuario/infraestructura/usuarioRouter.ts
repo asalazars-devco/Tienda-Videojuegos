@@ -6,11 +6,13 @@ const usuarioRouter = express.Router();
 
 usuarioRouter.get(
     '/',
+    autenticacion,
     usuarioControlador.execObtenerTodosUsuarios.bind(usuarioControlador)
 );
 
 usuarioRouter.get(
     '/:id',
+    autenticacion,
     usuarioControlador.execObtenerUsuarioPorId.bind(usuarioControlador)
 );
 

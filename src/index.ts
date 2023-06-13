@@ -4,6 +4,7 @@ import { ordenRouter } from './orden/infraestructura/ordenRouter';
 import { usuarioRouter } from './usuario/infraestructura/usuarioRouter';
 
 const app = express();
+app.disable('x-powered-by');
 
 app.use(express.json());
 

@@ -22,6 +22,12 @@ export class UsuarioControlador {
     ) {}
 
     async execObtenerTodosUsuarios(req: Request, res: Response) {
+        const usuarioEsAdmin = esAdmin(req.usuario?.rol);
+
+        if (!usuarioEsAdmin) {
+            return res.status(403).send({ error: 'Acceso no permitido' });
+        }
+
         try {
             const usuariosTodos = await this.obtenerTodosUsuarios.ejecutar();
             res.status(200).send(usuariosTodos);
@@ -34,6 +40,12 @@ export class UsuarioControlador {
 
     async execObtenerUsuarioPorId(req: Request, res: Response) {
         const idUsuario = req.params.id;
+
+        const usuarioEsAdmin = esAdmin(req.usuario?.rol);
+
+        if (!usuarioEsAdmin) {
+            return res.status(403).send({ error: 'Acceso no permitido' });
+        }
 
         try {
             const usuario = await this.obtenerUsuarioPorId.ejecutar(
@@ -67,9 +79,9 @@ export class UsuarioControlador {
                 rol
             );
 
+            res.set('Content-Type', 'text/plain');
             res.status(201).send(usuarioNuevo);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             res.status(400).send({ error: error.message });
         }
     }
@@ -94,9 +106,9 @@ export class UsuarioControlador {
                 rol
             );
 
+            res.set('Content-Type', 'text/plain');
             res.status(201).send(usuarioActualizado);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             res.status(400).send({ error: error.message });
         }
     }
@@ -121,7 +133,6 @@ export class UsuarioControlador {
             );
             res.status(200).send(usuarioEliminado);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             if (error.message.includes('sintaxis')) {
                 res.status(400).send({ error: 'ID invalido' });
             } else {
@@ -140,7 +151,6 @@ export class UsuarioControlador {
             );
             res.status(200).send(usuarioAutenticado);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             if (error.message.includes('Credenciales no suministradas')) {
                 res.status(400).send({ error: error.message });
             } else {
@@ -155,7 +165,6 @@ export class UsuarioControlador {
             res.setHeader('Limpiar-Token', 'true');
             res.status(200).send(usuarioCerroSesion);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             res.status(500).send({ error: 'Error al cerrar la sesion' });
         }
     }

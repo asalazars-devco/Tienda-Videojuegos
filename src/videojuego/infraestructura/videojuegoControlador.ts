@@ -69,7 +69,6 @@ export class VideojuegoControlador {
 
             res.status(201).send(videojuegoNuevo);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             if (error.message.includes('llave duplicada')) {
                 res.status(201).sendStatus(201);
             } else {
@@ -98,9 +97,9 @@ export class VideojuegoControlador {
                     stock
                 );
 
+            res.set('Content-Type', 'text/plain');
             res.status(201).send(videojuegoActualizado);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             if (error.message.includes('sintaxis')) {
                 res.status(400).send({ error: 'ID invalido' });
             } else {
@@ -124,7 +123,6 @@ export class VideojuegoControlador {
             );
             res.status(200).send(videojuegoEliminado);
         } catch (error: any) {
-            console.log('mensaje de Error:', error.message);
             if (error.message.includes('sintaxis')) {
                 res.status(400).send({ error: 'ID invalido' });
             } else {
