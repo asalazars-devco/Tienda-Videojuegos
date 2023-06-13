@@ -22,10 +22,12 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
                 }>;
                 cantidad: number;
                 valor_total: number;
+                id_usuario: number | null;
             }) => {
                 const ordenObtenida = new Orden(orden.videojuegos_comprados);
                 ordenObtenida.colocarValorTotal(orden.valor_total);
                 ordenObtenida.colocarId(orden.id);
+                ordenObtenida.colocarIdUsuario(orden.id_usuario);
                 return ordenObtenida;
             }
         );
@@ -44,6 +46,7 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
             const ordenObtenida = new Orden(orden.videojuegos_comprados);
             ordenObtenida.colocarValorTotal(orden.valor_total);
             ordenObtenida.colocarId(orden.id);
+            ordenObtenida.colocarIdUsuario(orden.id_usuario);
             return ordenObtenida;
         }
     }
@@ -52,7 +55,8 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
         videojuegos_compradosOrden: Array<{
             id: number;
             cantidad: number;
-        }>
+        }>,
+        id_usuario: number | null
     ): Promise<Orden> {
         try {
             const ordenCreada = new Orden(videojuegos_compradosOrden);
@@ -91,11 +95,12 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
 
             // Creo la orden de compra en la base de datos
             const crearOrdenQuery =
-                'INSERT INTO ordenes (videojuegos_comprados, cantidad, valor_total) VALUES ($1, $2, $3) RETURNING *';
+                'INSERT INTO ordenes (videojuegos_comprados, cantidad, valor_total, id_usuario) VALUES ($1, $2, $3, $4) RETURNING *';
             const crearOrdenValues = [
                 JSON.stringify(videojuegos_compradosOrden),
                 ordenCreada.obtenerCantidad(),
                 valorTotalOrden,
+                id_usuario,
             ];
 
             const crearOrdenResultado = await database.query(
@@ -106,6 +111,7 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
             const orden = crearOrdenResultado[0];
             ordenCreada.colocarValorTotal(orden.valor_total);
             ordenCreada.colocarId(orden.id);
+            ordenCreada.colocarIdUsuario(orden.id_usuario);
 
             // Actualizo los juegos con el nuevo stock en la base de datos
             await Promise.all(
@@ -157,6 +163,7 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
             const ordenEliminada = new Orden(orden.videojuegos_comprados);
             ordenEliminada.colocarValorTotal(orden.valor_total);
             ordenEliminada.colocarId(orden.id);
+            ordenEliminada.colocarIdUsuario(orden.id_usuario);
             return ordenEliminada;
         }
     }

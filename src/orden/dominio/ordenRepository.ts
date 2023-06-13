@@ -9,7 +9,8 @@ export interface OrdenRepository {
         videojuegos_compradosOrden: Array<{
             id: number;
             cantidad: number;
-        }>
+        }>,
+        id_usuario: number | null
     ): Promise<Orden>;
 
     eliminar(idOrden: number): Promise<Orden>;

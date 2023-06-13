@@ -9,6 +9,9 @@ export class Videojuego {
         if (typeof id !== 'number') {
             throw new Error('ID tiene que ser de tipo number');
         }
+        if (id <= 0) {
+            throw new Error('ID debe ser mayor de 0');
+        }
         if (typeof nombre !== 'string' || nombre.length === 0) {
             throw new Error(
                 'Nombre tiene que ser de tipo string y no puede ser vacio'

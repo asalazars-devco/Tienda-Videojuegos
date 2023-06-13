@@ -964,6 +964,9 @@ components:
         cantidad:
           type: integer
           example: 5
+        usuario_id:
+          type: number
+          example: 1
       xml:
         name: orden
     Usuario:

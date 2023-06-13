@@ -53,10 +53,11 @@ CREATE TABLE videojuegos (
 );
 
 CREATE TABLE ordenes (
-  id SERIAL PRIMARY KEY,
-  videojuegos_comprados JSONB,
-  cantidad INTEGER,
-  valor_total NUMERIC(10, 2)
+	id SERIAL PRIMARY KEY,
+	videojuegos_comprados JSONB,
+	cantidad INTEGER,
+	valor_total NUMERIC(10, 2),
+	id_usuario INTEGER
 );
 
 CREATE TABLE usuarios (

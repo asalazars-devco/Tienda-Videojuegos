@@ -2,6 +2,7 @@ export class Orden {
     private id!: number;
     private cantidad: number;
     private valor_total!: number;
+    private id_usuario!: number | null;
 
     constructor(
         readonly videojuegos_comprados: Array<{
@@ -29,5 +30,9 @@ export class Orden {
 
     colocarValorTotal(valor_total: number): void {
         this.valor_total = valor_total;
+    }
+
+    colocarIdUsuario(idUsuario: number | null): void {
+        this.id_usuario = idUsuario;
     }
 }

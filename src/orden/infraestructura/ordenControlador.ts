@@ -6,6 +6,7 @@ import { CrearOrden } from '../aplicacion/crearOrden';
 import { EliminarOrden } from '../aplicacion/eliminarOrden';
 
 import esAdmin from '../../helpers/esAdmin';
+import verificarToken from '../../helpers/verificarToken';
 
 export class OrdenControlador {
     constructor(
@@ -59,9 +60,12 @@ export class OrdenControlador {
     async execCrearOrden(req: Request, res: Response) {
         const { videojuegos_comprados } = req.body;
 
+        const id_usuario = req.usuario?.id;
+
         try {
             const ordenNueva = await this.crearOrden.ejecutar(
-                videojuegos_comprados
+                videojuegos_comprados,
+                id_usuario || null
             );
 
             res.set('Content-Type', 'text/plain');
