@@ -69,7 +69,15 @@ CREATE TABLE usuarios (
 );
 ```
 
-5.  Dentro de la tabla `usuarios`, crea un usuario de tipo `admin`.
+5.  Dentro de la tabla `usuarios`, crea un usuario de tipo `admin`, con las siguientes credenciales:
+
+```
+  nombre: admin
+  password: 123456
+  email: admin@mail.com
+  rol: admin
+```
+
 6.  Crea un archivo `.env` en el directorio raíz del proyecto y agrega la configuración necesaria. Puedes utilizar el archivo `.env.example` como referencia.
 
     Este archivo contiene las credenciales necesarias para la conexión con la base de datos creada en el paso 4, además de otras configuraciones adicionales referentes a la creación y gestión de tokens de autenticación.
