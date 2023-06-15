@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        depends_on:
+            - postgres
+        ports:
+            - '${API_PORT}:3000'
+    postgres:
+        image: postgres:latest
+        environment:
+            - POSTGRES_HOST=${DB_HOST}
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_DATABASE}
+        ports:
+            - '${POSTGRES_PORT}:${DB_PORT}'
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - ${ADMINER_PORT}:8080
+        depends_on:
+            - postgres
+    pgadmin-compose:
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        ports:
+            - '${PGADMIN_PORT}:80'
+        depends_on:
+            - postgres
+volumes:
+    postgres-data:

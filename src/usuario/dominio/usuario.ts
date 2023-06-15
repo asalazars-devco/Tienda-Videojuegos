@@ -33,7 +33,7 @@ export class Usuario {
     }
 
     colocarId(id: number): void {
-        if (id <= 0) {
+        if (id < 0) {
             throw new Error('ID debe ser mayor de 0');
         }
         this.id = id;
