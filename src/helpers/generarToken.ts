@@ -4,9 +4,6 @@ import dotenv from 'dotenv';
 // Cargar las variables de entorno desde el archivo .env
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const EXPIRE_TIME = process.env.EXPIRE_TIME;
-
 const generarToken = (usuario: {
     id: number;
     nombre: string;
@@ -14,7 +11,7 @@ const generarToken = (usuario: {
     password: string;
     rol: string;
 }): string => {
-    if (!JWT_SECRET || !EXPIRE_TIME) {
+    if (!process.env.JWT_SECRET || !process.env.EXPIRE_TIME) {
         throw new Error(
             'Establece la clave secreta y el tiempo de expiracion para los tokens'
         );
@@ -28,10 +25,10 @@ const generarToken = (usuario: {
     };
 
     const options = {
-        expiresIn: EXPIRE_TIME,
+        expiresIn: process.env.EXPIRE_TIME,
     };
 
-    const token = jwt.sign(payload, JWT_SECRET, options);
+    const token = jwt.sign(payload, process.env.JWT_SECRET, options);
     return token;
 };
 

@@ -88,7 +88,7 @@ CREATE TABLE usuarios (
   rol: admin
 ```
 
-    Para acceder a la API como usuario tipo `admin`, podras usar las siguientes credenciales creadas anteriormente:
+Para acceder a la API como usuario tipo `admin`, podras usar las siguientes credenciales creadas anteriormente:
 
 ```
   email: admin@mail.com

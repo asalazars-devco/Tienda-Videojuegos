@@ -2,3 +2,5 @@
 /build
 gamesExample.json
 .env
+coverage
+jest.config.js
