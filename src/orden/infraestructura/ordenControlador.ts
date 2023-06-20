@@ -15,25 +15,24 @@ export class OrdenControlador {
         private readonly eliminarOrden: EliminarOrden
     ) {}
 
-    async execObtenerTodasOrdenes(req: Request, res: Response) {
-        try {
-            const usuarioEsAdmin = esAdmin(req.usuario?.rol);
+    execObtenerTodasOrdenes(req: Request, res: Response) {
+        const usuarioEsAdmin = esAdmin(req.usuario?.rol);
 
-            if (!usuarioEsAdmin) {
-                return res.status(403).send({ error: 'Acceso no permitido' });
-            }
-
-            const ordenesTodas = await this.obtenerTodasOrdenes.ejecutar();
-
-            res.status(200).send(ordenesTodas);
-        } catch (error) {
-            res.status(500).send({
-                error: 'Error al cargar las ordenes',
-            });
+        if (!usuarioEsAdmin) {
+            return res.status(403).send({ error: 'Acceso no permitido' });
         }
+
+        this.obtenerTodasOrdenes
+            .ejecutar()
+            .then((ordenesTodas) => res.status(200).send(ordenesTodas))
+            .catch(() => {
+                res.status(500).send({
+                    error: 'Error al cargar las ordenes',
+                });
+            });
     }
 
-    async execObtenerOrdenPorId(req: Request, res: Response) {
+    execObtenerOrdenPorId(req: Request, res: Response) {
         const idOrden = req.params.id;
 
         const usuarioEsAdmin = esAdmin(req.usuario?.rol);
@@ -42,18 +41,16 @@ export class OrdenControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const orden = await this.obtenerOrdenPorId.ejecutar(
-                Number(idOrden)
-            );
-            res.status(200).send(orden);
-        } catch (error: any) {
-            if (error.message.includes('sintaxis')) {
-                res.status(400).send({ error: 'ID invalido' });
-            } else {
-                res.status(404).send({ error: error.message });
-            }
-        }
+        this.obtenerOrdenPorId
+            .ejecutar(Number(idOrden))
+            .then((orden) => res.status(200).send(orden))
+            .catch((error) => {
+                if (error.message.includes('sintaxis')) {
+                    res.status(400).send({ error: 'ID invalido' });
+                } else {
+                    res.status(404).send({ error: error.message });
+                }
+            });
     }
 
     async execCrearOrden(req: Request, res: Response) {
@@ -61,21 +58,19 @@ export class OrdenControlador {
 
         const id_usuario = req.usuario?.id;
 
-        try {
-            const ordenNueva = await this.crearOrden.ejecutar(
-                videojuegos_comprados,
-                id_usuario || null
-            );
-
-            res.set('Content-Type', 'text/plain');
-            res.status(201).send(ordenNueva);
-        } catch (error: any) {
-            if (error.message.includes('no encontrado')) {
-                res.status(404).send({ error: error.message });
-            } else {
-                res.status(400).send({ error: error.message });
-            }
-        }
+        this.crearOrden
+            .ejecutar(videojuegos_comprados, id_usuario || null)
+            .then((ordenNueva) => {
+                // res.set('Content-Type', 'text/plain');
+                res.status(201).send(ordenNueva);
+            })
+            .catch((error) => {
+                if (error.message.includes('no encontrado')) {
+                    res.status(404).send({ error: error.message });
+                } else {
+                    res.status(400).send({ error: error.message });
+                }
+            });
     }
 
     async execEliminarOrden(req: Request, res: Response) {
@@ -87,17 +82,15 @@ export class OrdenControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const ordenEliminada = await this.eliminarOrden.ejecutar(
-                Number(idOrden)
-            );
-            res.status(200).send(ordenEliminada);
-        } catch (error: any) {
-            if (error.message.includes('sintaxis')) {
-                res.status(400).send({ error: 'ID invalido' });
-            } else {
-                res.status(404).send({ error: error.message });
-            }
-        }
+        this.eliminarOrden
+            .ejecutar(Number(idOrden))
+            .then((ordenEliminada) => res.status(200).send(ordenEliminada))
+            .catch((error) => {
+                if (error.message.includes('sintaxis')) {
+                    res.status(400).send({ error: 'ID invalido' });
+                } else {
+                    res.status(404).send({ error: error.message });
+                }
+            });
     }
 }
