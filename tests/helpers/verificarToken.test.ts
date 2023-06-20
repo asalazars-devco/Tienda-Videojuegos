@@ -1,10 +1,15 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import verificarToken from '../../src/helpers/verificarToken';
 
-dotenv.config();
-
 describe('verificarToken', () => {
+    beforeEach(() => {
+        process.env.JWT_SECRET = 'secret';
+    });
+
+    afterEach(() => {
+        delete process.env.JWT_SECRET;
+    });
+
     test('debería devolver el contenido decodificado del token válido', () => {
         const payload = {
             id: 1,
