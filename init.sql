@@ -1,6 +1,6 @@
 CREATE TABLE videojuegos (
     id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL UNIQUE,
+    nombre VARCHAR2(100) NOT NULL UNIQUE,
     precio NUMERIC(10, 2) NOT NULL,
     imagen TEXT,
     stock INTEGER
@@ -18,8 +18,8 @@ CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nombre TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    password VARCHAR(100) NOT NULL,
-    rol VARCHAR(20)
+    password VARCHAR2(100) NOT NULL,
+    rol VARCHAR2(20)
 );
 
 INSERT INTO usuarios (id, nombre, email, password, rol)

@@ -17,39 +17,33 @@ export class VideojuegoControlador {
         private readonly eliminarVideojuego: EliminarVideojuego
     ) {}
 
-    async execObtenerVideojuegoPorId(
-        req: Request,
-        res: Response
-    ): Promise<void> {
+    execObtenerVideojuegoPorId(req: Request, res: Response) {
         const idVideojuego = req.params.id;
 
-        try {
-            const videojuego = await this.obtenerVideojuegoPorId.ejecutar(
-                Number(idVideojuego)
-            );
-            res.status(200).send(videojuego);
-        } catch (error: any) {
-            if (error.message.includes('sintaxis')) {
-                res.status(400).send({ error: 'ID invalido' });
-            } else {
-                res.status(404).send({ error: error.message });
-            }
-        }
-    }
-
-    async execObtenerTodosVideojuegos(req: Request, res: Response) {
-        try {
-            const videojuegosTodos =
-                await this.obtenerTodosVideojuegos.ejecutar();
-            res.status(200).send(videojuegosTodos);
-        } catch (error) {
-            res.status(500).send({
-                error: 'Error al cargar los videojuegos',
+        this.obtenerVideojuegoPorId
+            .ejecutar(Number(idVideojuego))
+            .then((videojuego) => res.status(200).send(videojuego))
+            .catch((error) => {
+                if (error.message.includes('sintaxis')) {
+                    res.status(400).send({ error: 'ID invalido' });
+                } else {
+                    res.status(404).send({ error: error.message });
+                }
             });
-        }
     }
 
-    async execCrearVideojuego(req: Request, res: Response) {
+    execObtenerTodosVideojuegos(req: Request, res: Response) {
+        this.obtenerTodosVideojuegos
+            .ejecutar()
+            .then((videojuegosTodos) => res.status(200).send(videojuegosTodos))
+            .catch(() =>
+                res.status(500).send({
+                    error: 'Error al cargar los videojuegos',
+                })
+            );
+    }
+
+    execCrearVideojuego(req: Request, res: Response) {
         const { nombre, precio, imagen, stock } = req.body;
 
         const usuarioEsAdmin = esAdmin(req.usuario?.rol);
@@ -58,26 +52,19 @@ export class VideojuegoControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const videojuegoNuevo = await this.crearVideojuego.ejecutar(
-                null,
-                nombre,
-                precio,
-                imagen,
-                stock
-            );
-
-            res.status(201).send(videojuegoNuevo);
-        } catch (error: any) {
-            if (error.message.includes('llave duplicada')) {
-                res.status(201).sendStatus(201);
-            } else {
-                res.status(400).send({ error: error.message });
-            }
-        }
+        this.crearVideojuego
+            .ejecutar(null, nombre, precio, imagen, stock)
+            .then((videojuegoNuevo) => res.status(201).send(videojuegoNuevo))
+            .catch((error) => {
+                if (error.message.includes('llave duplicada')) {
+                    res.status(201).sendStatus(201);
+                } else {
+                    res.status(400).send({ error: error.message });
+                }
+            });
     }
 
-    async execActualizarVideojuego(req: Request, res: Response) {
+    execActualizarVideojuego(req: Request, res: Response) {
         const idVideojuego = req.params.id;
         const { nombre, precio, imagen, stock } = req.body;
 
@@ -87,28 +74,22 @@ export class VideojuegoControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const videojuegoActualizado =
-                await this.actualizarVideojuego.ejecutar(
-                    Number(idVideojuego),
-                    nombre,
-                    precio,
-                    imagen,
-                    stock
-                );
-
-            res.set('Content-Type', 'text/plain');
-            res.status(201).send(videojuegoActualizado);
-        } catch (error: any) {
-            if (error.message.includes('sintaxis')) {
-                res.status(400).send({ error: 'ID invalido' });
-            } else {
-                res.status(400).send({ error: error.message });
-            }
-        }
+        this.actualizarVideojuego
+            .ejecutar(Number(idVideojuego), nombre, precio, imagen, stock)
+            .then((videojuegoActualizado) => {
+                res.set('Content-Type', 'text/plain');
+                res.status(201).send(videojuegoActualizado);
+            })
+            .catch((error) => {
+                if (error.message.includes('sintaxis')) {
+                    res.status(400).send({ error: 'ID invalido' });
+                } else {
+                    res.status(400).send({ error: error.message });
+                }
+            });
     }
 
-    async execEliminarVideojuego(req: Request, res: Response) {
+    execEliminarVideojuego(req: Request, res: Response) {
         const idVideojuego = req.params.id;
 
         const usuarioEsAdmin = esAdmin(req.usuario?.rol);
@@ -117,17 +98,17 @@ export class VideojuegoControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const videojuegoEliminado = await this.eliminarVideojuego.ejecutar(
-                Number(idVideojuego)
-            );
-            res.status(200).send(videojuegoEliminado);
-        } catch (error: any) {
-            if (error.message.includes('sintaxis')) {
-                res.status(400).send({ error: 'ID invalido' });
-            } else {
-                res.status(404).send({ error: error.message });
-            }
-        }
+        this.eliminarVideojuego
+            .ejecutar(Number(idVideojuego))
+            .then((videojuegoEliminado) =>
+                res.status(200).send(videojuegoEliminado)
+            )
+            .catch((error) => {
+                if (error.message.includes('sintaxis')) {
+                    res.status(400).send({ error: 'ID invalido' });
+                } else {
+                    res.status(404).send({ error: error.message });
+                }
+            });
     }
 }
