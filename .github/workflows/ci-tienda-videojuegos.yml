@@ -28,7 +28,7 @@ jobs:
         with:
           args: >
             -Dsonar.organization=asalazars-devco
-            -Dsonar.projectKey=Tienda-Videojuegos
+            -Dsonar.projectKey=asalazars-devco_Tienda-Videojuegos
       - name: SonarQube Quality Gate Check
         uses: SonarSource/sonarqube-quality-gate-action@master
         timeout-minutes: 5
