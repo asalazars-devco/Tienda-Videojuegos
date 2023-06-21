@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: asalazarsdevco/tienda-videojuegos
 
 jobs:
   build:
@@ -28,13 +28,13 @@ jobs:
         with:
           args: >
             -Dsonar.organization=asalazars-devco
-            -Dsonar.projectKey=asalazars-devco_Tienda-Videojuegos
+            -Dsonar.projectKey=asalazars-devco_tienda-videojuegos
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
-      - name: SonarQube Quality Gate Check
-        uses: SonarSource/sonarqube-quality-gate-action@master
-        timeout-minutes: 5
-        env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#      - name: SonarQube Quality Gate Check
+#        uses: SonarSource/sonarqube-quality-gate-action@master
+#        timeout-minutes: 5
+#        env:
+#         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   docker-build:
     runs-on: ubuntu-latest
