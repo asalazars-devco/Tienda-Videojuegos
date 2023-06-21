@@ -29,6 +29,7 @@ jobs:
           args: >
             -Dsonar.organization=asalazars-devco
             -Dsonar.projectKey=asalazars-devco_Tienda-Videojuegos
+            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
       - name: SonarQube Quality Gate Check
         uses: SonarSource/sonarqube-quality-gate-action@master
         timeout-minutes: 5
