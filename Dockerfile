@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instala las dependencias del proyecto
-RUN npm install
+RUN npm install --ignore-scripts
 
 # Copia el resto de los archivos del proyecto al directorio de trabajo
 COPY . .
@@ -20,4 +20,5 @@ RUN npm run tsc
 EXPOSE 3000
 
 # Ejecuta el comando para iniciar la API
+USER node
 CMD ["npm", "start"]

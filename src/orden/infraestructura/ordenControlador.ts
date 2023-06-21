@@ -53,7 +53,7 @@ export class OrdenControlador {
             });
     }
 
-    async execCrearOrden(req: Request, res: Response) {
+    execCrearOrden(req: Request, res: Response) {
         const { videojuegos_comprados } = req.body;
 
         const id_usuario = req.usuario?.id;
@@ -61,7 +61,7 @@ export class OrdenControlador {
         this.crearOrden
             .ejecutar(videojuegos_comprados, id_usuario || null)
             .then((ordenNueva) => {
-                // res.set('Content-Type', 'text/plain');
+                res.set('Content-Type', 'text/plain');
                 res.status(201).send(ordenNueva);
             })
             .catch((error) => {
@@ -73,7 +73,7 @@ export class OrdenControlador {
             });
     }
 
-    async execEliminarOrden(req: Request, res: Response) {
+    execEliminarOrden(req: Request, res: Response) {
         const idOrden = req.params.id;
 
         const usuarioEsAdmin = esAdmin(req.usuario?.rol);

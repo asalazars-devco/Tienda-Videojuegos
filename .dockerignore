@@ -1,2 +1,15 @@
 node_modules
 npm-debug.log
+Dockerfile
+.dockerignore
+docker-compose.yaml
+.git
+.gitignore
+build
+coverage
+tests
+.github
+.env.example
+documentacionAPI.yaml
+README.md
+jest.config.js

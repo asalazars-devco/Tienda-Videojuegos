@@ -21,24 +21,24 @@ export class UsuarioControlador {
         private readonly logoutUsuario: LogoutUsuario
     ) {}
 
-    async execObtenerTodosUsuarios(req: Request, res: Response) {
+    execObtenerTodosUsuarios(req: Request, res: Response) {
         const usuarioEsAdmin = esAdmin(req.usuario?.rol);
 
         if (!usuarioEsAdmin) {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const usuariosTodos = await this.obtenerTodosUsuarios.ejecutar();
-            res.status(200).send(usuariosTodos);
-        } catch (error) {
-            res.status(500).send({
-                error: 'Error al cargar los usuarios',
-            });
-        }
+        this.obtenerTodosUsuarios
+            .ejecutar()
+            .then((usuariosTodos) => res.status(200).send(usuariosTodos))
+            .catch(() =>
+                res.status(500).send({
+                    error: 'Error al cargar los usuarios',
+                })
+            );
     }
 
-    async execObtenerUsuarioPorId(req: Request, res: Response) {
+    execObtenerUsuarioPorId(req: Request, res: Response) {
         const idUsuario = req.params.id;
 
         const usuarioEsAdmin = esAdmin(req.usuario?.rol);
@@ -47,21 +47,19 @@ export class UsuarioControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const usuario = await this.obtenerUsuarioPorId.ejecutar(
-                Number(idUsuario)
-            );
-            res.status(200).send(usuario);
-        } catch (error: any) {
-            if (error.message.includes('sintaxis')) {
-                res.status(400).send({ error: 'ID invalido' });
-            } else {
-                res.status(404).send({ error: error.message });
-            }
-        }
+        this.obtenerUsuarioPorId
+            .ejecutar(Number(idUsuario))
+            .then((usuario) => res.status(200).send(usuario))
+            .catch((error) => {
+                if (error.message.includes('sintaxis')) {
+                    res.status(400).send({ error: 'ID invalido' });
+                } else {
+                    res.status(404).send({ error: error.message });
+                }
+            });
     }
 
-    async execCrearUsuario(req: Request, res: Response) {
+    execCrearUsuario(req: Request, res: Response) {
         const { nombre, email, password, rol } = req.body;
 
         const usuarioPeticionEsAdmin = esAdmin(req.usuario?.rol);
@@ -70,23 +68,16 @@ export class UsuarioControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const usuarioNuevo = await this.crearUsuario.ejecutar(
-                null,
-                nombre,
-                email,
-                password,
-                rol
-            );
-
-            res.set('Content-Type', 'text/plain');
-            res.status(201).send(usuarioNuevo);
-        } catch (error: any) {
-            res.status(400).send({ error: error.message });
-        }
+        this.crearUsuario
+            .ejecutar(null, nombre, email, password, rol)
+            .then((usuarioNuevo) => {
+                res.set('Content-Type', 'text/plain');
+                res.status(201).send(usuarioNuevo);
+            })
+            .catch((error) => res.status(400).send({ error: error.message }));
     }
 
-    async execActualizarUsuario(req: Request, res: Response) {
+    execActualizarUsuario(req: Request, res: Response) {
         const idUsuario = req.params.id;
         const { nombre, email, password, rol } = req.body;
 
@@ -97,23 +88,16 @@ export class UsuarioControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const usuarioActualizado = await this.actualizarUsuario.ejecutar(
-                Number(idUsuario),
-                nombre,
-                email,
-                password,
-                rol
-            );
-
-            res.set('Content-Type', 'text/plain');
-            res.status(201).send(usuarioActualizado);
-        } catch (error: any) {
-            res.status(400).send({ error: error.message });
-        }
+        this.actualizarUsuario
+            .ejecutar(Number(idUsuario), nombre, email, password, rol)
+            .then((usuarioActualizado) => {
+                res.set('Content-Type', 'text/plain');
+                res.status(201).send(usuarioActualizado);
+            })
+            .catch((error) => res.status(400).send({ error: error.message }));
     }
 
-    async execEliminarUsuario(req: Request, res: Response) {
+    execEliminarUsuario(req: Request, res: Response) {
         const idUsuario = req.params.id;
 
         const usuarioPeticionEsAdmin = esAdmin(req.usuario?.rol);
@@ -127,45 +111,44 @@ export class UsuarioControlador {
             return res.status(403).send({ error: 'Acceso no permitido' });
         }
 
-        try {
-            const usuarioEliminado = await this.eliminarUsuario.ejecutar(
-                Number(idUsuario)
-            );
-            res.status(200).send(usuarioEliminado);
-        } catch (error: any) {
-            if (error.message.includes('sintaxis')) {
-                res.status(400).send({ error: 'ID invalido' });
-            } else {
-                res.status(404).send({ error: error.message });
-            }
-        }
+        this.eliminarUsuario
+            .ejecutar(Number(idUsuario))
+            .then((usuarioEliminado) => res.status(200).send(usuarioEliminado))
+            .catch((error) => {
+                if (error.message.includes('sintaxis')) {
+                    res.status(400).send({ error: 'ID invalido' });
+                } else {
+                    res.status(404).send({ error: error.message });
+                }
+            });
     }
 
-    async execLoginUsuario(req: Request, res: Response) {
+    execLoginUsuario(req: Request, res: Response) {
         const { email, password } = req.body;
 
-        try {
-            const usuarioAutenticado = await this.loginUsuario.ejecutar(
-                email,
-                password
-            );
-            res.status(200).send(usuarioAutenticado);
-        } catch (error: any) {
-            if (error.message.includes('Credenciales no suministradas')) {
-                res.status(400).send({ error: error.message });
-            } else {
-                res.status(401).send({ error: error.message });
-            }
-        }
+        this.loginUsuario
+            .ejecutar(email, password)
+            .then((usuarioAutenticado) =>
+                res.status(200).send(usuarioAutenticado)
+            )
+            .catch((error) => {
+                if (error.message.includes('Credenciales no suministradas')) {
+                    res.status(400).send({ error: error.message });
+                } else {
+                    res.status(401).send({ error: error.message });
+                }
+            });
     }
 
-    async execLogoutUsuario(req: Request, res: Response) {
-        try {
-            const usuarioCerroSesion = await this.logoutUsuario.ejecutar();
-            res.setHeader('Limpiar-Token', 'true');
-            res.status(200).send(usuarioCerroSesion);
-        } catch (error: any) {
-            res.status(500).send({ error: 'Error al cerrar la sesion' });
-        }
+    execLogoutUsuario(req: Request, res: Response) {
+        this.logoutUsuario
+            .ejecutar()
+            .then((usuarioCerroSesion) => {
+                res.setHeader('Limpiar-Token', 'true');
+                res.status(200).send(usuarioCerroSesion);
+            })
+            .catch(() =>
+                res.status(500).send({ error: 'Error al cerrar la sesion' })
+            );
     }
 }
