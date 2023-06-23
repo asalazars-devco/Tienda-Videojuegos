@@ -23,7 +23,6 @@ export class ActualizarVideojuego {
             throw new Error(`Videojuego no encontrado`);
         }
 
-        console.log('juego actualizado:', videojuegoActualizado.nombre);
         return videojuegoActualizado;
     }
 }

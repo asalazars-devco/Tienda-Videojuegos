@@ -10,7 +10,6 @@ export class EliminarOrden {
             throw new Error(`Orden no encontrada`);
         }
 
-        console.log('orden eliminada');
         return orden;
     }
 }

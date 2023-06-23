@@ -19,7 +19,6 @@ export class ActualizarUsuario {
             rolUsuario
         );
 
-        console.log('usuario actualizado:', usuarioActualizado.nombre);
         return usuarioActualizado;
     }
 }

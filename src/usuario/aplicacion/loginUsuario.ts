@@ -9,7 +9,6 @@ export class LoginUsuario {
             passwordUsuario
         );
 
-        console.log('Usuario autenticado');
         return usuarioAutenticado;
     }
 }

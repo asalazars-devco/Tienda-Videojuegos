@@ -6,7 +6,6 @@ export class ObtenerTodosUsuarios {
     async ejecutar() {
         const usuariosTodos = await this.usuarioRepository.obtenerTodo();
 
-        console.log('Usuarios obtenidos:', usuariosTodos.length);
         return usuariosTodos;
     }
 }

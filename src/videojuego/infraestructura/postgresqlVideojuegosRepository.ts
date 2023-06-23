@@ -19,7 +19,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
             return new Videojuego(
                 videojuego.id,
                 videojuego.nombre,
-                Number(videojuego.precio),
+                videojuego.precio,
                 videojuego.imagen,
                 videojuego.stock
             );
@@ -32,16 +32,16 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
 
         return videojuegos.map(
             (videojuego: {
-                id: any;
+                id: number;
                 nombre: string;
-                precio: any;
+                precio: number;
                 imagen: string;
                 stock: number;
             }) => {
                 return new Videojuego(
                     videojuego.id,
                     videojuego.nombre,
-                    Number(videojuego.precio),
+                    videojuego.precio,
                     videojuego.imagen,
                     videojuego.stock
                 );
@@ -87,7 +87,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
             return new Videojuego(
                 videojuego.id,
                 videojuego.nombre,
-                Number(videojuego.precio),
+                videojuego.precio,
                 videojuego.imagen,
                 videojuego.stock
             );
@@ -101,7 +101,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
                 return new Videojuego(
                     videojuego.id,
                     videojuego.nombre,
-                    Number(videojuego.precio),
+                    videojuego.precio,
                     videojuego.imagen,
                     videojuego.stock
                 );
@@ -137,7 +137,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
             const videojuegoActualizado = new Videojuego(
                 idVideojuego,
                 nombreVideojuego,
-                Number(precioVideojuego),
+                precioVideojuego,
                 imagenVideojuego,
                 stockVideojuego
             );
@@ -145,10 +145,6 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
             const resultado = await database.query(query, values);
 
             if (resultado.length === 0) {
-                console.log(
-                    `ID ${idVideojuego} no encontrado en la base de datos`
-                );
-                console.log('Se crea el videojuego');
                 return this.crear(
                     idVideojuego,
                     nombreVideojuego,
@@ -177,7 +173,7 @@ export class PostgresqlVideojuegosRepository implements VideojuegoRepository {
             return new Videojuego(
                 videojuego.id,
                 videojuego.nombre,
-                Number(videojuego.precio),
+                videojuego.precio,
                 videojuego.imagen,
                 videojuego.stock
             );

@@ -14,7 +14,6 @@ export class CrearOrden {
             videojuegos_compradosOrden,
             id_usuario
         );
-        console.log('orden creada');
         return ordenCreada;
     }
 }

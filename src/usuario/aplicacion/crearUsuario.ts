@@ -18,7 +18,6 @@ export class CrearUsuario {
             passwordUsuario,
             rolUsuario
         );
-        console.log('usuario creado');
         return usuarioCreado;
     }
 }

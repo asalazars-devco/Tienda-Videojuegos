@@ -6,7 +6,6 @@ export class EliminarUsuario {
     async ejecutar(idUsuario: number) {
         const usuario = await this.usuarioRepository.eliminar(idUsuario);
 
-        console.log('usuario eliminado');
         return usuario;
     }
 }

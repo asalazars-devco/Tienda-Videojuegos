@@ -12,7 +12,6 @@ export class ObtenerVideojuegoPorId {
             throw new Error(`Videojuego no encontrado`);
         }
 
-        console.log('videojuego obtenido: ', videojuego.nombre);
         return videojuego;
     }
 }

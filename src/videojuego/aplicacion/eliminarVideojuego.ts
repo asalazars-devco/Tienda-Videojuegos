@@ -12,7 +12,6 @@ export class EliminarVideojuego {
             throw new Error(`Videojuego no encontrado`);
         }
 
-        console.log('videojuego eliminado: ', videojuego.nombre);
         return videojuego;
     }
 }

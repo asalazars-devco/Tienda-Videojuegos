@@ -10,7 +10,6 @@ export class ObtenerOrdenPorId {
             throw new Error(`Orden no encontrada`);
         }
 
-        console.log('orden obtenida: ', idOrden);
         return orden;
     }
 }

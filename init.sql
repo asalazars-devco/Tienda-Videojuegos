@@ -1,7 +1,7 @@
 CREATE TABLE videojuegos (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
-    precio NUMERIC(10, 2) NOT NULL,
+    precio REAL NOT NULL,
     imagen TEXT,
     stock INTEGER
 );
@@ -10,7 +10,7 @@ CREATE TABLE ordenes (
 	id SERIAL PRIMARY KEY,
 	videojuegos_comprados JSONB,
 	cantidad INTEGER,
-	valor_total NUMERIC(10, 2),
+	valor_total REAL,
 	id_usuario INTEGER
 );
 

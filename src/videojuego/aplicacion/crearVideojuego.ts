@@ -18,7 +18,6 @@ export class CrearVideojuego {
             stockVideojuego
         );
 
-        console.log('videojuego creado:', videojuegoCreado.nombre);
         return videojuegoCreado;
     }
 }

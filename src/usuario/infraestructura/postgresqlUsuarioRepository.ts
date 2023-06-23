@@ -155,10 +155,6 @@ export class PostgresqlUsuarioRepository implements UsuarioRepository {
             const resultado = await database.query(query, values);
 
             if (resultado.length === 0) {
-                console.log(
-                    `ID ${idUsuario} no encontrado en la base de datos`
-                );
-                console.log('Se crea el usuario');
                 return this.crear(
                     idUsuario,
                     nombreUsuario,
