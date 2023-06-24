@@ -121,19 +121,14 @@ export class PostgresqlOrdenRepository implements OrdenRepository {
                             videojuego.id
                         );
 
-                    if (!videojuegoComprado) {
-                        throw new Error(
-                            `Videojuego con ID ${videojuego.id} no encontrado`
-                        );
-                    }
                     const stockActualizado =
-                        videojuegoComprado.stock - videojuego.cantidad;
+                        videojuegoComprado!.stock - videojuego.cantidad;
 
                     await this.videojuegoRepository.actualizar(
-                        videojuegoComprado.id,
-                        videojuegoComprado.nombre,
-                        videojuegoComprado.precio,
-                        videojuegoComprado.imagen,
+                        videojuegoComprado!.id,
+                        videojuegoComprado!.nombre,
+                        videojuegoComprado!.precio,
+                        videojuegoComprado!.imagen,
                         stockActualizado
                     );
                 })
