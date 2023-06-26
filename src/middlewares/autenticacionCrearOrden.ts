@@ -11,9 +11,13 @@ export const autenticacionCrearOrden = (
     if (autorizacionHeaders === undefined) {
         next();
     } else {
-        const token = autorizacionHeaders.split(' ')[1];
-        const tokenData = verificarToken(token);
-        req.usuario = tokenData;
-        next();
+        try {
+            const token = autorizacionHeaders.split(' ')[1];
+            const tokenData = verificarToken(token);
+            req.usuario = tokenData;
+            next();
+        } catch (error) {
+            return res.status(401).send({ error: 'Acceso no autorizado' });
+        }
     }
 };
