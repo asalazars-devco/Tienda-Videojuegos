@@ -21,7 +21,6 @@ describe('PostgresqlVideojuegosRepository', () => {
         };
 
         test('debe obtener un videojuego existente por ID', async () => {
-            // Configurar el comportamiento del método query en el mock de Database
             databaseMock.query = jest
                 .fn()
                 .mockResolvedValue([videojuegoExistente]);
@@ -31,7 +30,6 @@ describe('PostgresqlVideojuegosRepository', () => {
                 idVideojuego
             );
 
-            // Verificar el resultado
             expect(resultado).toEqual(
                 new Videojuego(
                     videojuegoExistente.id,
@@ -49,7 +47,6 @@ describe('PostgresqlVideojuegosRepository', () => {
         });
 
         test('debe devolver null si el videojuego no existe por ID', async () => {
-            // Configurar el comportamiento del método query en el mock de Database
             databaseMock.query.mockResolvedValue([]);
 
             const idVideojuego = 1;
@@ -57,7 +54,6 @@ describe('PostgresqlVideojuegosRepository', () => {
                 idVideojuego
             );
 
-            // Verificar el resultado
             expect(resultado).toBeNull();
 
             expect(databaseMock.query).toHaveBeenCalledWith(
@@ -92,7 +88,6 @@ describe('PostgresqlVideojuegosRepository', () => {
 
             const resultado = await videojuegoRepository.obtenerTodo();
 
-            // Verificar el resultado
             expect(resultado).toEqual(videojuegosExistentes);
 
             expect(databaseMock.query).toHaveBeenCalledWith(
@@ -105,7 +100,6 @@ describe('PostgresqlVideojuegosRepository', () => {
 
             const resultado = await videojuegoRepository.obtenerTodo();
 
-            // Verificar el resultado
             expect(resultado).toEqual([]);
 
             expect(databaseMock.query).toHaveBeenCalledWith(
@@ -135,7 +129,6 @@ describe('PostgresqlVideojuegosRepository', () => {
                 videojuegoNuevo.stock
             );
 
-            // Verificar el resultado
             expect(resultado).toEqual(
                 new Videojuego(
                     1,
@@ -176,7 +169,6 @@ describe('PostgresqlVideojuegosRepository', () => {
                 videojuegoNuevo.stock
             );
 
-            // Verificar el resultado
             expect(resultado).toEqual(
                 new Videojuego(
                     videojuegoNuevo.id,
@@ -234,9 +226,9 @@ describe('PostgresqlVideojuegosRepository', () => {
             const videojuegoExistente = {
                 id: 1,
                 nombre: 'Videojuego Existente',
-                precio: 29.99,
+                precio: 49.99,
                 imagen: 'videojuego.png',
-                stock: 5,
+                stock: 15,
             };
 
             databaseMock.query = jest
@@ -252,7 +244,6 @@ describe('PostgresqlVideojuegosRepository', () => {
                 videojuegoNuevo.stock
             );
 
-            // Verificar el resultado
             expect(resultado).toEqual(videojuegoExistente);
 
             expect(databaseMock.query).toHaveBeenCalledWith(
@@ -284,7 +275,6 @@ describe('PostgresqlVideojuegosRepository', () => {
                 videojuegoActualizado.stock
             );
 
-            // Verificar el resultado
             expect(resultado).toEqual(videojuegoActualizado);
 
             expect(databaseMock.query).toHaveBeenCalledWith(
@@ -321,7 +311,6 @@ describe('PostgresqlVideojuegosRepository', () => {
                 videojuegoActualizado.stock
             );
 
-            // Verificar el resultado
             expect(resultado).toEqual(videojuegoActualizado);
         });
 
@@ -348,6 +337,7 @@ describe('PostgresqlVideojuegosRepository', () => {
 
     describe('eliminar', () => {
         test('debe eliminar un videojuego existente', async () => {
+            const idVideojuego = 1;
             const videojuegoExistente = {
                 id: 1,
                 nombre: 'Videojuego existente',
@@ -360,11 +350,8 @@ describe('PostgresqlVideojuegosRepository', () => {
                 .fn()
                 .mockResolvedValue([videojuegoExistente]);
 
-            const resultado = await videojuegoRepository.eliminar(
-                videojuegoExistente.id
-            );
+            const resultado = await videojuegoRepository.eliminar(idVideojuego);
 
-            // Verificar el resultado
             expect(resultado).toEqual(videojuegoExistente);
         });
 
@@ -373,7 +360,6 @@ describe('PostgresqlVideojuegosRepository', () => {
 
             databaseMock.query = jest.fn().mockResolvedValue([]);
 
-            // Verificar el resultado
             await expect(
                 videojuegoRepository.eliminar(idVideojuegoNoExistente)
             ).rejects.toThrowError('Videojuego no encontrado');

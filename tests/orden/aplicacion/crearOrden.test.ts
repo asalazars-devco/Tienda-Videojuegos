@@ -28,7 +28,7 @@ describe('CrearOrden', () => {
 
     const crearOrden = new CrearOrden(ordenRepositoryMock);
 
-    test('debe crear una orden', async () => {
+    test('debe llamar al método crear del ordenRepository y devolver la orden creada', async () => {
         const videojuegosComprados = [
             { id: 1, cantidad: 2 },
             { id: 2, cantidad: 3 },

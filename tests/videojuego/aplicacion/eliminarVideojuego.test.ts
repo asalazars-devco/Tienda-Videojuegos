@@ -23,7 +23,7 @@ describe('EliminarVideojuego', () => {
 
     const eliminarVideojuego = new EliminarVideojuego(videojuegoRepositoryMock);
 
-    test('debe eliminar un videojuego existente', async () => {
+    test('debe llamar al método eliminar del videojuegoRepository y devolver el videojuego eliminado', async () => {
         const videojuegoExistente = {
             id: 1,
             nombre: 'Videojuego existente',
@@ -32,12 +32,10 @@ describe('EliminarVideojuego', () => {
             stock: 10,
         };
 
-        // Ejecutar la función bajo prueba
         const resultado = await eliminarVideojuego.ejecutar(
             videojuegoExistente.id
         );
 
-        // Verificar el resultado
         expect(resultado).toEqual(videojuegoExistente);
 
         expect(videojuegoRepositoryMock.eliminar).toHaveBeenCalledWith(
@@ -45,10 +43,9 @@ describe('EliminarVideojuego', () => {
         );
     });
 
-    test('debe lanzar un error si el videojuego no existe', async () => {
+    test('debe llamar al método eliminar del videojuegoRepository y lanzar un error si el videojuego no existe', async () => {
         const idVideojuegoNoExistente = 2;
 
-        // Ejecutar y verificar que se lance un error
         await expect(
             eliminarVideojuego.ejecutar(idVideojuegoNoExistente)
         ).rejects.toThrow('Videojuego no encontrado');

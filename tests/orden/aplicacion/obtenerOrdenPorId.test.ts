@@ -16,7 +16,7 @@ describe('ObtenerOrdenPorId', () => {
 
     const obtenerOrdenPorId = new ObtenerOrdenPorId(ordenRepositoryMock);
 
-    test('debe obtener una orden por su ID', async () => {
+    test('debe llamar al método obtenerPorId del ordenRepository y devolver la orden obtenida si existe', async () => {
         const idOrden = 1;
 
         const ordenObtenida = {
@@ -41,7 +41,7 @@ describe('ObtenerOrdenPorId', () => {
         expect(resultado).toEqual(ordenObtenida);
     });
 
-    test('debe lanzar un error si la orden no existe', async () => {
+    test('debe llamar al método obtenerPorId del ordenRepository y lanzar un error si la orden no existe', async () => {
         const idOrden = 1;
 
         ordenRepositoryMock.obtenerPorId = jest.fn().mockResolvedValue(null);

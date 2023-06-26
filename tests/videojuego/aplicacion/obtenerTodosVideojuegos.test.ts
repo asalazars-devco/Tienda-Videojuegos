@@ -10,7 +10,7 @@ describe('ObtenerTodosVideojuegos', () => {
         videojuegoRepositoryMock
     );
 
-    test('debe obtener todos los videojuegos existentes', async () => {
+    test('debe llamar al método obtenerTodo del videojuegoRepository y devolver todos los videojuegos existentes', async () => {
         const videojuegosExistentes = [
             {
                 id: 1,
@@ -28,25 +28,20 @@ describe('ObtenerTodosVideojuegos', () => {
             },
         ];
 
-        // Configurar el comportamiento del método obtenerTodo en el mock
         videojuegoRepositoryMock.obtenerTodo = jest
             .fn()
             .mockResolvedValue(videojuegosExistentes);
 
-        // Ejecutar la función bajo prueba
         const resultado = await obtenerTodosVideojuegos.ejecutar();
 
-        // Verificar el resultado
         expect(resultado).toEqual(videojuegosExistentes);
 
         expect(videojuegoRepositoryMock.obtenerTodo).toHaveBeenCalled();
     });
 
-    test('debe obtener una lista vacía si no existen videojuegos', async () => {
-        // Configurar el comportamiento del método obtenerTodo en el mock
+    test('debe llamar al método obtenerTodo del videojuegoRepository y obtener una lista vacía si no existen videojuegos', async () => {
         videojuegoRepositoryMock.obtenerTodo = jest.fn().mockResolvedValue([]);
 
-        // Ejecutar y verificar el resultado
         const resultado = await obtenerTodosVideojuegos.ejecutar();
 
         expect(resultado).toEqual([]);

@@ -10,7 +10,7 @@ describe('ObtenerVideojuegoPorId', () => {
         videojuegoRepositoryMock
     );
 
-    test('debe obtener el videojuego correcto por ID', async () => {
+    test('debe llamar al método obtenerPorId del videojuegoRepository y devolver el videojuego obtenido', async () => {
         const videojuegoExistente = {
             id: 1,
             nombre: 'Videojuego 1',
@@ -19,16 +19,13 @@ describe('ObtenerVideojuegoPorId', () => {
             stock: 10,
         };
 
-        // Configurar el comportamiento del método obtenerPorId en el mock
         videojuegoRepositoryMock.obtenerPorId = jest
             .fn()
             .mockResolvedValue(videojuegoExistente);
 
-        // Ejecutar la función bajo prueba
         const idVideojuego = 1;
         const resultado = await obtenerVideojuegoPorId.ejecutar(idVideojuego);
 
-        // Verificar el resultado
         expect(resultado).toEqual(videojuegoExistente);
 
         expect(videojuegoRepositoryMock.obtenerPorId).toHaveBeenCalledWith(
@@ -36,13 +33,11 @@ describe('ObtenerVideojuegoPorId', () => {
         );
     });
 
-    test('debe lanzar un error si el videojuego no existe', async () => {
-        // Configurar el comportamiento del método obtenerPorId en el mock
+    test('debe llamar al método obtenerPorId del videojuegoRepository y lanzar un error si el videojuego no existe', async () => {
         videojuegoRepositoryMock.obtenerPorId = jest
             .fn()
             .mockResolvedValue(null);
 
-        // Ejecutar y verificar el resultado
         const idVideojuego = 1;
 
         await expect(

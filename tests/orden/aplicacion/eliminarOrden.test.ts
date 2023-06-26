@@ -16,7 +16,7 @@ describe('EliminarOrden', () => {
 
     const eliminarOrden = new EliminarOrden(ordenRepositoryMock);
 
-    test('debe eliminar una orden existente', async () => {
+    test('debe llamar al método eliminar del ordenRepository y devolver la orden eliminada si existe', async () => {
         const idOrden = 1;
 
         const ordenEliminada = {

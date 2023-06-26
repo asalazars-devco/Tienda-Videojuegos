@@ -16,7 +16,7 @@ describe('ObtenerTodasOrdenes', () => {
 
     const obtenerTodasOrdenes = new ObtenerTodasOrdenes(ordenRepositoryMock);
 
-    test('debe obtener todos las ordenes existentes', async () => {
+    test('debe llamar al método obtenerTodo del ordenRepository y devolver las ordenes existentes', async () => {
         const ordenesExistentes = [
             {
                 id: 1,
@@ -48,7 +48,7 @@ describe('ObtenerTodasOrdenes', () => {
         expect(ordenRepositoryMock.obtenerTodo).toHaveBeenCalled();
     });
 
-    test('debe obtener una lista vacía si no existen ordenes', async () => {
+    test('debe llamar al método obtenerTodo del ordenRepository y obtener una lista vacía si no existen ordenes', async () => {
         ordenRepositoryMock.obtenerTodo = jest.fn().mockResolvedValue([]);
 
         const resultado = await obtenerTodasOrdenes.ejecutar();

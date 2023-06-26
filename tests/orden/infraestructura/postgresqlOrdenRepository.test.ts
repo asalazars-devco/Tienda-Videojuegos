@@ -4,7 +4,7 @@ import { OrdenRepository } from '../../../src/orden/dominio/ordenRepository';
 import { PostgresqlOrdenRepository } from '../../../src/orden/infraestructura/postgresqlOrdenRepository';
 import Database from '../../../src/postgreSQL_DB';
 
-const database = Database.getInstance();
+const databaseMock = Database.getInstance() as jest.Mocked<Database>;
 
 describe('PostgresqlOrdenRepository', () => {
     let ordenRepository: OrdenRepository;
@@ -50,16 +50,15 @@ describe('PostgresqlOrdenRepository', () => {
                 },
             ];
 
-            database.query = jest.fn().mockResolvedValue(ordenes);
+            databaseMock.query = jest.fn().mockResolvedValue(ordenes);
 
             const resultado = await ordenRepository.obtenerTodo();
 
-            expect(database.query).toHaveBeenCalledWith(
+            expect(databaseMock.query).toHaveBeenCalledWith(
                 'SELECT * FROM ordenes'
             );
             expect(resultado).toHaveLength(2);
 
-            // Verificar que las órdenes obtenidas tengan los valores correctos
             expect(resultado[0]).toBeInstanceOf(Orden);
             expect(resultado[0].videojuegos_comprados).toEqual([
                 { id: 1, cantidad: 2 },
@@ -94,11 +93,11 @@ describe('PostgresqlOrdenRepository', () => {
                 id_usuario: 1,
             };
 
-            database.query = jest.fn().mockResolvedValue([orden]);
+            databaseMock.query = jest.fn().mockResolvedValue([orden]);
 
             const resultado = await ordenRepository.obtenerPorId(1);
 
-            expect(database.query).toHaveBeenCalledWith(
+            expect(databaseMock.query).toHaveBeenCalledWith(
                 'SELECT * FROM ordenes WHERE id = $1',
                 [1]
             );
@@ -114,13 +113,13 @@ describe('PostgresqlOrdenRepository', () => {
         });
 
         test('debe lanzar un error si la orden no existe', async () => {
-            database.query = jest.fn().mockResolvedValue([]);
+            databaseMock.query = jest.fn().mockResolvedValue([]);
 
             await expect(ordenRepository.obtenerPorId(1)).rejects.toThrow(
                 'Orden no encontrada'
             );
 
-            expect(database.query).toHaveBeenCalledWith(
+            expect(databaseMock.query).toHaveBeenCalledWith(
                 'SELECT * FROM ordenes WHERE id = $1',
                 [1]
             );
@@ -174,7 +173,9 @@ describe('PostgresqlOrdenRepository', () => {
                 },
             ];
 
-            database.query = jest.fn().mockResolvedValue(crearOrdenResultado);
+            databaseMock.query = jest
+                .fn()
+                .mockResolvedValue(crearOrdenResultado);
 
             const resultado = await ordenRepository.crear(
                 videojuegos_compradosOrden,
@@ -209,8 +210,8 @@ describe('PostgresqlOrdenRepository', () => {
                 9
             );
 
-            expect(database.query).toHaveBeenCalledTimes(1);
-            expect(database.query).toHaveBeenCalledWith(
+            expect(databaseMock.query).toHaveBeenCalledTimes(1);
+            expect(databaseMock.query).toHaveBeenCalledWith(
                 'INSERT INTO ordenes (videojuegos_comprados, cantidad, valor_total, id_usuario) VALUES ($1, $2, $3, $4) RETURNING *',
                 [JSON.stringify(videojuegos_compradosOrden), 3, 130, id_usuario]
             );
@@ -262,7 +263,7 @@ describe('PostgresqlOrdenRepository', () => {
 
             expect(mockVideojuegoRepository.actualizar).not.toHaveBeenCalled();
 
-            expect(database.query).not.toHaveBeenCalled();
+            expect(databaseMock.query).not.toHaveBeenCalled();
         });
 
         test('debe lanzar un error si la cantidad a comprar no está especificada', async () => {
@@ -313,7 +314,7 @@ describe('PostgresqlOrdenRepository', () => {
 
             expect(mockVideojuegoRepository.actualizar).not.toHaveBeenCalled();
 
-            expect(database.query).not.toHaveBeenCalled();
+            expect(databaseMock.query).not.toHaveBeenCalled();
         });
 
         test('debe lanzar un error si no hay suficiente stock disponible', async () => {
@@ -361,7 +362,7 @@ describe('PostgresqlOrdenRepository', () => {
 
             expect(mockVideojuegoRepository.actualizar).not.toHaveBeenCalled();
 
-            expect(database.query).not.toHaveBeenCalled();
+            expect(databaseMock.query).not.toHaveBeenCalled();
         });
 
         test('debe lanzar un error si los campos de los videojuegos comprados estan mal diligenciados', async () => {
@@ -382,7 +383,7 @@ describe('PostgresqlOrdenRepository', () => {
                 .mockResolvedValueOnce(videojuego1)
                 .mockResolvedValueOnce(videojuego1);
 
-            database.query = jest
+            databaseMock.query = jest
                 .fn()
                 .mockRejectedValueOnce(new Error('sintaxis'));
 
@@ -399,8 +400,8 @@ describe('PostgresqlOrdenRepository', () => {
                 1
             );
 
-            expect(database.query).toHaveBeenCalledTimes(1);
-            expect(database.query).toHaveBeenCalledWith(
+            expect(databaseMock.query).toHaveBeenCalledTimes(1);
+            expect(databaseMock.query).toHaveBeenCalledWith(
                 'INSERT INTO ordenes (videojuegos_comprados, cantidad, valor_total, id_usuario) VALUES ($1, $2, $3, $4) RETURNING *',
                 [JSON.stringify(videojuegos_compradosOrden), '0k', NaN, null]
             );
@@ -421,14 +422,14 @@ describe('PostgresqlOrdenRepository', () => {
                 id_usuario: 1,
             };
 
-            database.query = jest
+            databaseMock.query = jest
                 .fn()
                 .mockResolvedValueOnce([ordenEliminadaDB]);
 
             const ordenEliminada = await ordenRepository.eliminar(idOrden);
 
-            expect(database.query).toHaveBeenCalledTimes(1);
-            expect(database.query).toHaveBeenCalledWith(
+            expect(databaseMock.query).toHaveBeenCalledTimes(1);
+            expect(databaseMock.query).toHaveBeenCalledWith(
                 'DELETE FROM ordenes WHERE id = $1 RETURNING *',
                 [idOrden]
             );
@@ -447,14 +448,14 @@ describe('PostgresqlOrdenRepository', () => {
         test('debe lanzar un error si la orden no existe', async () => {
             const idOrden = 1;
 
-            database.query = jest.fn().mockResolvedValueOnce([]);
+            databaseMock.query = jest.fn().mockResolvedValueOnce([]);
 
             await expect(ordenRepository.eliminar(idOrden)).rejects.toThrow(
                 'Orden no encontrada'
             );
 
-            expect(database.query).toHaveBeenCalledTimes(1);
-            expect(database.query).toHaveBeenCalledWith(
+            expect(databaseMock.query).toHaveBeenCalledTimes(1);
+            expect(databaseMock.query).toHaveBeenCalledWith(
                 'DELETE FROM ordenes WHERE id = $1 RETURNING *',
                 [idOrden]
             );

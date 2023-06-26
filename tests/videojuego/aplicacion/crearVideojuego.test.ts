@@ -28,7 +28,7 @@ describe('CrearVideojuego', () => {
 
     const crearVideojuego = new CrearVideojuego(videojuegoRepositoryMock);
 
-    test('debe crear un nuevo videojuego', async () => {
+    test('debe llamar al método crear del videojuegoRepository y devolver el videojuego creado', async () => {
         const nuevoVideojuego = {
             id: 1,
             nombre: 'Nuevo Videojuego',
@@ -37,7 +37,6 @@ describe('CrearVideojuego', () => {
             stock: 10,
         };
 
-        // Ejecutar la función bajo prueba
         const resultado = await crearVideojuego.ejecutar(
             null,
             nuevoVideojuego.nombre,
@@ -46,7 +45,6 @@ describe('CrearVideojuego', () => {
             nuevoVideojuego.stock
         );
 
-        // Verificar el resultado
         expect(resultado).toEqual(nuevoVideojuego);
 
         expect(videojuegoRepositoryMock.crear).toHaveBeenCalledWith(
