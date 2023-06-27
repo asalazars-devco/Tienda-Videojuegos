@@ -15,8 +15,9 @@ Esta API está desarrollada con Node.js, Typescript y Express.
     <li> Utilizar buenas prácticas de programación (Clean code, SOLID). </li>
     <li> Almacenar la información en una BD. </li>
     <li> Realizar contenerización en Docker. </li>
-    <li> Aplicar pruebas unitarias automatizadas [WIP]. </li>
+    <li> Aplicar pruebas unitarias automatizadas. </li>
     <li> Aplicar pruebas de código estático (SonarCloud). </li>
+    <li> Realizar pipeline de CI en Github Actions (Integración Continua). </li>
 </ul>
 
 ## Requisitos
@@ -62,11 +63,11 @@ CREATE TABLE videojuegos (
 );
 
 CREATE TABLE ordenes (
-	id SERIAL PRIMARY KEY,
-	videojuegos_comprados JSONB,
-	cantidad INTEGER,
-	valor_total REAL,
-	id_usuario INTEGER
+  id SERIAL PRIMARY KEY,
+  videojuegos_comprados JSONB,
+  cantidad INTEGER,
+  valor_total REAL,
+  id_usuario INTEGER
 );
 
 CREATE TABLE usuarios (
@@ -122,6 +123,16 @@ npm run dev
 
 5.  La API estará disponible en `http://localhost:3000`
 6.  Utiliza una herramienta como cURL, Postman o cualquier otro cliente HTTP para interactuar con los endpoints de la API.
+
+## Pruebas unitarias
+
+1.  Ejecuta las pruebas unitarias del proyecto, luego de instalar las dependencias del proyecto `npm install`, podras ejecutar el siguiente comando:
+
+```
+npm run test
+```
+
+Este comando ejecutará todas las pruebas unitarias elaboradas para el proyecto, además de mostrar la cobertura de código por parte de estas.
 
 ## Contenedores
 
